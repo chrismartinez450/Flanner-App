@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">FlannerApp</string>
+    <string name="tracker">Tracker</string>
+    <string name="focus_timer">Focus Timer</string>
+    <string name="profile">Profile</string>
+    <string name="planner">Planner</string>
+</resources>
