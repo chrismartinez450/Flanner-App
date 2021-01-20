@@ -16,8 +16,8 @@
         android:layout_marginStart="5dp"
         android:layout_marginTop="10dp"
         android:fontFamily="@font/open_sans_bold"
-        android:text="Sign Up"
-        android:textSize="24dp" />
+        android:text="@string/signUpCapitalize"
+        android:textSize="24sp" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/emailTextInput"
@@ -30,7 +30,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textEmailAddress"
-            android:hint="Email"
+            android:hint="@string/email"
             android:textColor="#000000"
             android:textColorHint="#000000">
 
@@ -49,7 +49,7 @@
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Full Name"
+            android:hint="@string/fullName"
             android:inputType="text"
             android:textColor="#000000"
             android:textColorHint="#000000"
@@ -73,7 +73,7 @@
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Password"
+            android:hint="@string/password"
             android:inputType="textPassword"
             android:textColor="#000000"
             android:textColorHint="#000000">
@@ -93,7 +93,7 @@
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Age"
+            android:hint="@string/age"
             android:inputType="number">
 
         </com.google.android.material.textfield.TextInputEditText>
@@ -111,7 +111,7 @@
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="What's your main goal?"
+            android:hint="@string/mainGoalQuestion"
             android:inputType="text">
 
         </com.google.android.material.textfield.TextInputEditText>
@@ -125,7 +125,7 @@
         android:layout_below="@+id/goalTextInput"
         android:layout_marginTop="40dp"
         android:background="@drawable/btn_bg"
-        android:text="Sign up"
+        android:text="@string/signUpCapitalize"
         android:textSize="18sp" />
 
 </RelativeLayout>

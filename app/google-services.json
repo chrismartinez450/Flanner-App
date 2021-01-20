@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "176789021887",
+    "project_id": "flannerapp",
+    "storage_bucket": "flannerapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:176789021887:android:5b5cdd2cc17267d310920a",
+        "android_client_info": {
+          "package_name": "com.example.flannerapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "176789021887-bqe1rj9p7apfht0qhtbdgalg04g4bmjj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBPB5qPgtVSoBd4rgVcHGKZINUQe-U5FOQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "176789021887-bqe1rj9p7apfht0qhtbdgalg04g4bmjj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

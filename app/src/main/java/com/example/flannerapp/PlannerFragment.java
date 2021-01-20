@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 
 public class PlannerFragment extends Fragment {
 
+  CustomCalendarView customCalendarView;
   @Nullable
   @Override
   public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -20,6 +21,6 @@ public class PlannerFragment extends Fragment {
   }
 
   private void initializeLayout(View root) {
-
+    customCalendarView = root.findViewById(R.id.custom_calendar_view);
   }
 }

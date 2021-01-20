@@ -4,4 +4,13 @@
     <string name="focus_timer">Focus Timer</string>
     <string name="profile">Profile</string>
     <string name="planner">Planner</string>
+    <string name="signIn">Sign In</string>
+    <string name="signUp">Sign up</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="Flanner">Flanner</string>
+    <string name="fullName">Full Name</string>
+    <string name="mainGoalQuestion">What\'s your main goal?</string>
+    <string name="signUpCapitalize">SIGN UP</string>
+    <string name="age">Age</string>
 </resources>
