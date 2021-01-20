@@ -75,9 +75,12 @@ public class FocusTimerFragment extends Fragment {
         finishAlert.setPositiveButton("Finished", new DialogInterface.OnClickListener() {
           @Override
           public void onClick(DialogInterface dialog, int which) {
-            btnStart.animate().alpha(1).translationY(-80).setDuration(300).start();
+            btnStart.animate().alpha(1).translationY(-50).setDuration(300).start();
             btnStop.animate().alpha(0).setDuration(300).start();
+            btnPause.setAlpha(0);
             Toast.makeText(getActivity(),"Studied for: " + chrono.getText().toString(), Toast.LENGTH_SHORT ).show();
+            chrono.setBase(SystemClock.elapsedRealtime());
+            chrono.stop();
           }
         });
         finishAlert.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
