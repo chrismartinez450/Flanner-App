@@ -54,8 +54,8 @@ public class FocusTimerFragment extends Fragment {
       @Override
       public void onClick(View v) {
         icAnchor.startAnimation(roundingAnim);
-        btnStop.animate().alpha(1).translationY(-80).setDuration(300).start();
-        btnPause.animate().alpha(1).translationY(-80).setDuration(300).start();
+        btnStop.animate().alpha(1).setDuration(300).start();
+        btnPause.animate().alpha(1).setDuration(300).start();
         btnStart.animate().alpha(0).setDuration(300).start();
         chrono.setBase(SystemClock.elapsedRealtime());
         chrono.start();
@@ -75,7 +75,7 @@ public class FocusTimerFragment extends Fragment {
         finishAlert.setPositiveButton("Finished", new DialogInterface.OnClickListener() {
           @Override
           public void onClick(DialogInterface dialog, int which) {
-            btnStart.animate().alpha(1).translationY(-50).setDuration(300).start();
+            btnStart.animate().alpha(1).setDuration(300).start();
             btnStop.animate().alpha(0).setDuration(300).start();
             btnPause.setAlpha(0);
             Toast.makeText(getActivity(),"Studied for: " + chrono.getText().toString(), Toast.LENGTH_SHORT ).show();
@@ -100,7 +100,7 @@ public class FocusTimerFragment extends Fragment {
       public void onClick(View v) {
         timeWhenStopped = chrono.getBase() - SystemClock.elapsedRealtime();
         chrono.stop();
-        btnResume.animate().alpha(1).translationY(-80).setDuration(300).start();
+        btnResume.animate().alpha(1).setDuration(300).start();
         btnPause.animate().alpha(0).setDuration(300).start();
         icAnchor.clearAnimation();
       }
@@ -112,7 +112,7 @@ public class FocusTimerFragment extends Fragment {
         chrono.setBase(SystemClock.elapsedRealtime() + timeWhenStopped);
         chrono.start();
         icAnchor.startAnimation(roundingAnim);
-        btnPause.animate().alpha(1).translationY(-80).setDuration(300).start();
+        btnPause.animate().alpha(1).setDuration(300).start();
         btnResume.animate().alpha(0).setDuration(300).start();
       }
     });

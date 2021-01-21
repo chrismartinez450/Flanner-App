@@ -50,7 +50,7 @@
         android:layout_marginTop="150dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="200dp"
+        android:layout_marginBottom="245dp"
         android:background="#11B600"
         android:text="Start"
         android:textColor="#FFFFFF"
