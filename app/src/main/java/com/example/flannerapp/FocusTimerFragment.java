@@ -78,6 +78,7 @@ public class FocusTimerFragment extends Fragment {
             btnStart.animate().alpha(1).setDuration(300).start();
             btnStop.animate().alpha(0).setDuration(300).start();
             btnPause.setAlpha(0);
+            btnResume.setAlpha(0);
             Toast.makeText(getActivity(),"Studied for: " + chrono.getText().toString(), Toast.LENGTH_SHORT ).show();
             chrono.setBase(SystemClock.elapsedRealtime());
             chrono.stop();
