@@ -1,82 +1,113 @@
 package com.example.flannerapp;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-  private Button signUpButton;
+
+  private TextView registerTextView, forgotPasswordTextView;
+  private EditText editTextEmail, editTextPassword;
   private Button signInButton;
-  private TextInputLayout emailMain;
-  private TextInputLayout passwordMain;
 
-  private String emailInput;
-  private String passwordInput;
+  private FirebaseAuth mAuth;
 
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
-    initializeLayout();
 
-    signUpButton.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        Intent intent = new Intent(getApplicationContext(), SignUpActivity.class);
-        startActivity(intent);
-      }
-    });
+    registerTextView = findViewById(R.id.tv_register_main);
+    registerTextView.setOnClickListener(this);
 
-    signInButton.setOnClickListener(new View.OnClickListener() {
+    signInButton = findViewById(R.id.btn_signIn_main);
+    signInButton.setOnClickListener(this);
+
+    editTextEmail = findViewById(R.id.et_email_main);
+    editTextPassword = findViewById(R.id.et_password_main);
+    mAuth = FirebaseAuth.getInstance();
+
+    forgotPasswordTextView = findViewById(R.id.tv_forgotPassword_main);
+    forgotPasswordTextView.setOnClickListener(this);
+  }
+
+  @Override
+  public void onClick(View v) {
+    switch(v.getId()) {
+      case R.id.tv_register_main:
+        startActivity(new Intent(this, RegisterUser.class));
+        break;
+      case R.id.btn_signIn_main:
+        userLogin();
+        break;
+      case R.id.tv_forgotPassword_main:
+        startActivity(new Intent(this, ForgotPassword.class));
+        break;
+    }
+  }
+
+  private void userLogin() {
+    String email = editTextEmail.getText().toString().trim();
+    String password = editTextPassword.getText().toString().trim();
+
+    if (email.isEmpty()) {
+      editTextEmail.setError("Email is required!");
+      editTextEmail.requestFocus();
+    }
+
+    if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+      editTextEmail.setError("Please provide valid email!");
+      editTextEmail.requestFocus();
+    }
+
+    if (password.isEmpty()) {
+      editTextPassword.setError("Password is required!");
+      editTextPassword.requestFocus();
+    }
+
+    if (password.length() < 6) {
+      editTextPassword.setError("Password must be at least 6 characters!");
+      editTextPassword.requestFocus();
+    }
+
+
+    mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
       @Override
-      public void onClick(View v) {
-        if (!validateEmptyEmail() | !validateEmptyPassword()) {
-          Toast.makeText(getApplicationContext(), "Try Again", Toast.LENGTH_SHORT).show();
-          return;
+      public void onComplete(@NonNull Task<AuthResult> task) {
+        if (task.isSuccessful()) {
+          //redirect to user profile
+          FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+          assert user != null;
+          if (user.isEmailVerified()) {
+            startActivity(new Intent(MainActivity.this, HomeScreenActivity.class));
+          } else {
+            user.sendEmailVerification();
+            Toast.makeText(MainActivity.this, "Check your email to verify your account!", Toast.LENGTH_LONG).show();
+          }
+
+        } else {
+          Toast.makeText(MainActivity.this, "Failed to login! Please check your credentials", Toast.LENGTH_LONG).show();
         }
-        Intent intent = new Intent(getApplicationContext(), HomeScreenActivity.class);
-        startActivity(intent);
       }
     });
 
   }
-
-  private void initializeLayout() {
-    emailMain = findViewById(R.id.emailMain);
-    passwordMain = findViewById(R.id.passwordMain);
-    signInButton = findViewById(R.id.SignInButton);
-    signUpButton = findViewById(R.id.SignUpButton);
-  }
-
-  private boolean validateEmptyEmail() {
-    emailInput = emailMain.getEditText().getText().toString().trim();
-    if (emailInput.isEmpty()) {
-      emailMain.setError("Email is required");
-      return false;
-    } else {
-      emailMain.setError(null);
-    }
-    return true;
-  }
-
-  private boolean validateEmptyPassword() {
-    passwordInput = passwordMain.getEditText().getText().toString().trim();
-    if (passwordInput.isEmpty()) {
-      passwordMain.setError("Password is required");
-      return false;
-    } else {
-      passwordMain.setError(null);
-    }
-    return true;
-  }
-
-
 }

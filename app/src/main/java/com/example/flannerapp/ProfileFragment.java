@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -14,58 +13,69 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 public class ProfileFragment extends Fragment {
-  private TextView displayEmail;
-  private TextView displayFullName;
-  private EditText displayAge;
-  private EditText displayGoal;
-  private Button confirmButton;
-  private Button signOutButton;
-  private Button deleteAccountButton;
+  private Button logOutButton;
+  private FirebaseUser user;
+  private FirebaseFirestore db = FirebaseFirestore.getInstance();
+  private DocumentReference docRef;
+  private String userID;
 
   @Nullable
   @Override
   public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
     View root = inflater.inflate(R.layout.fragment_profiles, container, false);
-    initializeLayout(root);
-    displayData();
-    confirmButton.setOnClickListener(new View.OnClickListener() {
+    logOutButton = root.findViewById(R.id.btn_signOut_profile);
+
+    logOutButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        Toast.makeText(getContext(), "Update Successful", Toast.LENGTH_SHORT).show();
-      }
-    });
-    signOutButton.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
+        FirebaseAuth.getInstance().signOut();
         startActivity(new Intent(getActivity(), MainActivity.class));
-        Toast.makeText(getContext(), "Sign out Successful", Toast.LENGTH_SHORT).show();
       }
     });
-    deleteAccountButton.setOnClickListener(new View.OnClickListener() {
+
+    user = FirebaseAuth.getInstance().getCurrentUser();
+    userID = user.getUid();
+    docRef = FirebaseFirestore.getInstance().collection("Users").document(userID);
+
+    final TextView greetingTextView = root.findViewById(R.id.greeting);
+    final TextView fullNameTextView = root.findViewById(R.id.tv_fullName_profile);
+    final TextView emailTextView = root.findViewById(R.id.tv_emailAddress_profile);
+    final TextView ageTextView = root.findViewById(R.id.tv_age_profile);
+
+    docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
       @Override
-      public void onClick(View v) {
-        startActivity(new Intent(getActivity(), MainActivity.class));
-        Toast.makeText(getContext(), "Delete Account Successful", Toast.LENGTH_SHORT).show();
+      public void onSuccess(DocumentSnapshot documentSnapshot) {
+        if (documentSnapshot.exists()) {
+          String fullName = documentSnapshot.getString("fullName");
+          String age = documentSnapshot.getString("age");
+          String email = documentSnapshot.getString("email");
+
+          fullNameTextView.setText(fullName);
+          emailTextView.setText(email);
+          ageTextView.setText(age);
+          greetingTextView.setText("Hello " + fullName);
+
+        } else {
+          Toast.makeText(getActivity(), "Document does not exist", Toast.LENGTH_LONG).show();
+        }
+      }
+    }).addOnFailureListener(new OnFailureListener() {
+      @Override
+      public void onFailure(@NonNull Exception e) {
+
       }
     });
+
     return root;
   }
 
-  private void initializeLayout(View root) {
-    displayEmail = root.findViewById(R.id.displayEmail);
-    displayFullName = root.findViewById(R.id.displayFullName);
-    displayAge = root.findViewById(R.id.displayAge);
-    displayGoal = root.findViewById(R.id.displayGoal);
-    confirmButton = root.findViewById(R.id.confirm_button);
-    signOutButton = root.findViewById(R.id.signOut_button);
-    deleteAccountButton = root.findViewById(R.id.deleteAccount_button);
-  }
-
-  private void displayData() {
-    displayEmail.setText("Email");
-    displayFullName.setText("Name");
-    // displayAge.setText(0);
-    displayGoal.setText("Goal");
-  }
 }

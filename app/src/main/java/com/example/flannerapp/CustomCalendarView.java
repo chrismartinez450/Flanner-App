@@ -22,6 +22,8 @@ import androidx.annotation.Nullable;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -59,6 +61,10 @@ public class CustomCalendarView extends LinearLayout {
 
   private FirebaseFirestore db = FirebaseFirestore.getInstance();
   private CollectionReference userEventInfo = db.collection("events");
+
+  private FirebaseUser user;
+  private String userID;
+  private String eventIDToAdd;
 
   public CustomCalendarView(Context context) {
     super(context);
@@ -124,11 +130,15 @@ public class CustomCalendarView extends LinearLayout {
         addEvent.setOnClickListener(new OnClickListener() {
           @Override
           public void onClick(View v) {
+            /*
             Toast.makeText(context, "event is: " + eventName.getText().toString()
               + " \nthe time is: " + eventTime.getText().toString() + " \ndate : " + date + "\nmonth : " + month
             + " \nyear: " + year, Toast.LENGTH_LONG).show();
+
+             */
             Events newEvent = new Events(eventName.getText().toString(), eventTime.getText().toString(), date, month, year);
-            CollectionReference c = db.collection("events");
+
+            CollectionReference c = db.collection(eventIDToAdd);
             // c.document(date + " " + eventTime.getText().toString()).set(newEvent);
             c.add(newEvent);
             setUpCalendar();
@@ -151,7 +161,7 @@ public class CustomCalendarView extends LinearLayout {
 
   public void updateEventsListAdapter(final OnTaskedCompleted listener) {
     eventsList.clear();
-    db.collection("events")
+    db.collection(eventIDToAdd)
       .orderBy(DATE, Query.Direction.ASCENDING)
       .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
       @Override
@@ -184,6 +194,9 @@ public class CustomCalendarView extends LinearLayout {
     currentDate = view.findViewById(R.id.current_date);
     gridView = view.findViewById(R.id.gridView);
     lvEvents = view.findViewById(R.id.lv_events);
+    user = FirebaseAuth.getInstance().getCurrentUser();
+    userID = user.getUid();
+    eventIDToAdd = userID + "- events";
   }
 
   private void setUpCalendar() {
@@ -202,7 +215,6 @@ public class CustomCalendarView extends LinearLayout {
     updateEventsListAdapter(new OnTaskedCompleted() {
       @Override
       public void onSuccess(List<Events> events) {
-
         myGridAdapter = new MyGridAdapter(context, dates, calendar, eventsList);
         gridView.setAdapter(myGridAdapter);
       }
