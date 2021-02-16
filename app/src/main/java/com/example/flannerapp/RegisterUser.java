@@ -2,7 +2,6 @@ package com.example.flannerapp;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Patterns;
@@ -10,36 +9,25 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class RegisterUser extends AppCompatActivity implements View.OnClickListener {
   private TextView banner, registerUserButton;
   private EditText editTextFullName, editTextAge, editTextEmail, editTextPassword;
-
   private FirebaseAuth mAuth;
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_register_user);
-    mAuth = FirebaseAuth.getInstance();
-
-    banner = findViewById(R.id.banner);
-    banner.setOnClickListener(this);
-
-    registerUserButton = findViewById(R.id.btn_registerUser_register);
-    registerUserButton.setOnClickListener(this);
-
-    editTextFullName = findViewById(R.id.et_fullName_register);
-    editTextAge = findViewById(R.id.et_age_register);
-    editTextEmail = findViewById(R.id.et_email_register);
-    editTextPassword = findViewById(R.id.et_password_register);
+    initializeAttributes();
+    performButtons();
   }
 
   @Override
@@ -54,50 +42,43 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
     }
   }
 
+  private void initializeAttributes() {
+    mAuth = FirebaseAuth.getInstance();
+    banner = findViewById(R.id.banner);
+    registerUserButton = findViewById(R.id.btn_registerUser_register);
+    editTextFullName = findViewById(R.id.et_fullName_register);
+    editTextAge = findViewById(R.id.et_age_register);
+    editTextEmail = findViewById(R.id.et_email_register);
+    editTextPassword = findViewById(R.id.et_password_register);
+  }
+
+  private void performButtons() {
+    banner.setOnClickListener(this);
+    registerUserButton.setOnClickListener(this);
+  }
+
   private void registerUser() {
     final String email = editTextEmail.getText().toString().trim();
     final String age = editTextAge.getText().toString().trim();
     final String fullName = editTextFullName.getText().toString().trim();
     String password = editTextPassword.getText().toString().trim();
+    checkValidAttributes(email, age, fullName, password);
+    createUserInFirebase(email, age, fullName, password);
+  }
 
-    if (fullName.isEmpty()) {
-      editTextFullName.setError("Full name is required!");
-      editTextFullName.requestFocus();
-    }
-
-    if (age.isEmpty()) {
-      editTextAge.setError("Age is required!");
-      editTextAge.requestFocus();
-    }
-
-    if (password.isEmpty()) {
-      editTextPassword.setError("Password is required!");
-      editTextPassword.requestFocus();
-    }
-
-    if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-      editTextEmail.setError("Please provide valid email!");
-      editTextEmail.requestFocus();
-    }
-
-    if (password.length() < 6) {
-      editTextPassword.setError("Password must be at least 6 characters!");
-      editTextPassword.requestFocus();
-    }
-
+  private void createUserInFirebase(final String email, final String age, final String fullName, String password) {
     mAuth.createUserWithEmailAndPassword(email, password)
       .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
         @Override
         public void onComplete(@NonNull Task<AuthResult> task) {
-
           if (task.isSuccessful()) {
             User user = new User(fullName, age, email);
-
             FirebaseFirestore.getInstance().collection("Users").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
               .set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
               @Override
               public void onSuccess(Void aVoid) {
-                Toast.makeText(RegisterUser.this, "New User!", Toast.LENGTH_LONG).show();
+                sendEmailVerification();
+                startActivity(new Intent(RegisterUser.this, MainActivity.class));
               }
             })
               .addOnFailureListener(new OnFailureListener() {
@@ -111,6 +92,56 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
           }
         }
       });
+  }
+
+  private void sendEmailVerification() {
+    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    assert user != null;
+    user.sendEmailVerification();
+    Toast.makeText(RegisterUser.this, "Check your email to verify your account!", Toast.LENGTH_LONG).show();
+  }
+
+  private void checkValidAttributes(String email, String age, String fullName, String password) {
+    checkEmptyFullName(fullName);
+    checkEmptyAge(age);
+    checkEmptyPassword(password);
+    checkEmailPatterns(email);
+    checkPasswordLength(password);
+  }
+
+  private void checkPasswordLength(String password) {
+    if (password.length() < 6) {
+      editTextPassword.setError("Password must be at least 6 characters!");
+      editTextPassword.requestFocus();
+    }
+  }
+
+  private void checkEmailPatterns(String email) {
+    if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+      editTextEmail.setError("Please provide valid email!");
+      editTextEmail.requestFocus();
+    }
+  }
+
+  private void checkEmptyPassword(String password) {
+    if (password.isEmpty()) {
+      editTextPassword.setError("Password is required!");
+      editTextPassword.requestFocus();
+    }
+  }
+
+  private void checkEmptyAge(String age) {
+    if (age.isEmpty()) {
+      editTextAge.setError("Age is required!");
+      editTextAge.requestFocus();
+    }
+  }
+
+  private void checkEmptyFullName(String fullName) {
+    if (fullName.isEmpty()) {
+      editTextFullName.setError("Full name is required!");
+      editTextFullName.requestFocus();
+    }
   }
 
 
