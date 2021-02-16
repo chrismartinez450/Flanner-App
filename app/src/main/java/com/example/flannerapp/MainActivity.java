@@ -45,6 +45,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
   }
 
+  // Test comment
+  /*
+  master : s1 s2 s3 s4      s5 (s4 + h1 + h2)
+  Hieu:             s4 h1 h2
+
+
+
+   */
   private void initializeAttributes() {
     registerTextView = findViewById(R.id.tv_register_main);
     signInButton = findViewById(R.id.btn_signIn_main);
