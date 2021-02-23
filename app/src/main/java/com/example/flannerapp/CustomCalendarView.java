@@ -15,11 +15,8 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -29,7 +26,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -41,30 +37,26 @@ import java.util.TimeZone;
 public class CustomCalendarView extends LinearLayout {
 
   public static final String DATE = "date";
-  ImageButton nextButton, previousButton;
-  TextView currentDate;
-  GridView gridView;
+  public static final String CALENDAR_EVENTS = "Calendar Events";
+  private ImageButton nextButton, previousButton;
+  private TextView currentDate;
+  private GridView gridView;
   private static final int MAX_CALENDAR_DAYS = 42;
-  Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
-  Context context;
-  SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM yyyy", Locale.ENGLISH);
-  SimpleDateFormat monthFormat = new SimpleDateFormat("MMMM", Locale.ENGLISH);
-  SimpleDateFormat yearFormat = new SimpleDateFormat("yyyy", Locale.ENGLISH);
-  SimpleDateFormat eventDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-
-  MyGridAdapter myGridAdapter;
-  ListView lvEvents;
-
-  AlertDialog alertDialog;
-  List<Date> dates = new ArrayList();
-  final List<Events> eventsList = new ArrayList();
-
+  private Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
+  private Context context;
+  private SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM yyyy", Locale.ENGLISH);
+  private SimpleDateFormat monthFormat = new SimpleDateFormat("MMMM", Locale.ENGLISH);
+  private SimpleDateFormat yearFormat = new SimpleDateFormat("yyyy", Locale.ENGLISH);
+  private SimpleDateFormat eventDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+  private MyGridAdapter myGridAdapter;
+  private ListView lvEvents;
+  private AlertDialog alertDialog;
+  private List<Date> dates = new ArrayList();
+  private final List<Events> eventsList = new ArrayList();
   private FirebaseFirestore db = FirebaseFirestore.getInstance();
-  private CollectionReference userEventInfo = db.collection("events");
-
+  private CollectionReference userPath = db.collection("Users");
   private FirebaseUser user;
   private String userID;
-  private String eventIDToAdd;
 
   public CustomCalendarView(Context context) {
     super(context);
@@ -126,26 +118,15 @@ public class CustomCalendarView extends LinearLayout {
         final String date = eventDateFormat.format(dates.get(position));
         final String month = monthFormat.format(dates.get(position));
         final String year = yearFormat.format(dates.get(position));
-
         addEvent.setOnClickListener(new OnClickListener() {
           @Override
           public void onClick(View v) {
-            /*
-            Toast.makeText(context, "event is: " + eventName.getText().toString()
-              + " \nthe time is: " + eventTime.getText().toString() + " \ndate : " + date + "\nmonth : " + month
-            + " \nyear: " + year, Toast.LENGTH_LONG).show();
-
-             */
             Events newEvent = new Events(eventName.getText().toString(), eventTime.getText().toString(), date, month, year);
-
-            CollectionReference c = db.collection(eventIDToAdd);
-            // c.document(date + " " + eventTime.getText().toString()).set(newEvent);
-            c.add(newEvent);
+            userPath.document(userID).collection(CALENDAR_EVENTS).add(newEvent);
             setUpCalendar();
             alertDialog.dismiss();
           }
         });
-
         builder.setView(addView);
         alertDialog = builder.create();
         alertDialog.show();
@@ -161,7 +142,7 @@ public class CustomCalendarView extends LinearLayout {
 
   public void updateEventsListAdapter(final OnTaskedCompleted listener) {
     eventsList.clear();
-    db.collection(eventIDToAdd)
+    userPath.document(userID).collection(CALENDAR_EVENTS)
       .orderBy(DATE, Query.Direction.ASCENDING)
       .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
       @Override
@@ -196,14 +177,12 @@ public class CustomCalendarView extends LinearLayout {
     lvEvents = view.findViewById(R.id.lv_events);
     user = FirebaseAuth.getInstance().getCurrentUser();
     userID = user.getUid();
-    eventIDToAdd = userID + "- events";
   }
 
   private void setUpCalendar() {
     String currentDate = dateFormat.format(calendar.getTime());
     this.currentDate.setText(currentDate);
     dates.clear();
-
     final Calendar monthCalendar = (Calendar)calendar.clone();
     monthCalendar.set(Calendar.DAY_OF_MONTH, 1);
     int firstDayOfMonth = monthCalendar.get(Calendar.DAY_OF_WEEK) - 1;
@@ -218,12 +197,9 @@ public class CustomCalendarView extends LinearLayout {
         myGridAdapter = new MyGridAdapter(context, dates, calendar, eventsList);
         gridView.setAdapter(myGridAdapter);
       }
-
       @Override
       public void onFail() {
       }
     });
-
   }
-
 }
