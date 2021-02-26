@@ -20,7 +20,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 public class RegisterUser extends AppCompatActivity implements View.OnClickListener {
   private TextView banner, registerUserButton;
-  private EditText editTextFullName, editTextAge, editTextEmail, editTextPassword;
+  private EditText editTextFullName, editTextAge, editTextEmail, editTextPassword, editTextUsername;
   private FirebaseAuth mAuth;
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +50,7 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
     editTextAge = findViewById(R.id.et_age_register);
     editTextEmail = findViewById(R.id.et_email_register);
     editTextPassword = findViewById(R.id.et_password_register);
+    editTextUsername = findViewById(R.id.et_username_register);
   }
 
   private void performButtons() {
@@ -61,18 +62,19 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
     final String email = editTextEmail.getText().toString().trim();
     final String age = editTextAge.getText().toString().trim();
     final String fullName = editTextFullName.getText().toString().trim();
+    final String username = editTextUsername.getText().toString().trim();
     String password = editTextPassword.getText().toString().trim();
-    checkValidAttributes(email, age, fullName, password);
-    createUserInFirebase(email, age, fullName, password);
+    checkValidAttributes(email, age, fullName, password, username);
+    createUserInFirebase(email, age, fullName, password, username);
   }
 
-  private void createUserInFirebase(final String email, final String age, final String fullName, String password) {
+  private void createUserInFirebase(final String email, final String age, final String fullName, String password, final String username) {
     mAuth.createUserWithEmailAndPassword(email, password)
       .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
         @Override
         public void onComplete(@NonNull Task<AuthResult> task) {
           if (task.isSuccessful()) {
-            User user = new User(fullName, age, email);
+            User user = new User(fullName, age, email, username);
             FirebaseFirestore.getInstance().collection("Users").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
               .set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
               @Override
@@ -101,12 +103,21 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
     Toast.makeText(RegisterUser.this, "Check your email to verify your account!", Toast.LENGTH_LONG).show();
   }
 
-  private void checkValidAttributes(String email, String age, String fullName, String password) {
+  private void checkValidAttributes(String email, String age, String fullName, String password, String username) {
     checkEmptyFullName(fullName);
     checkEmptyAge(age);
     checkEmptyPassword(password);
     checkEmailPatterns(email);
     checkPasswordLength(password);
+    checkEmptyUsername(username);
+  }
+
+  private void checkEmptyUsername(String username) {
+    if(username.isEmpty())
+    {
+      editTextUsername.setError("Username is required!");
+      editTextUsername.requestFocus();
+    }
   }
 
   private void checkPasswordLength(String password) {
