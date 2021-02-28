@@ -1,6 +1,7 @@
 package com.example.flannerapp;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -58,6 +59,10 @@ public class ProfileFragment extends Fragment {
           String fullName = documentSnapshot.getString("fullName");
           String age = documentSnapshot.getString("age");
           String email = documentSnapshot.getString("email");
+          greetingTextView.setTextColor(Color.WHITE);
+          fullNameTextView.setTextColor(Color.WHITE);
+          emailTextView.setTextColor(Color.WHITE);
+          ageTextView.setTextColor(Color.WHITE);
 
           fullNameTextView.setText(fullName);
           emailTextView.setText(email);
