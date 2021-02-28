@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:background="@android:color/holo_orange_light">
+    android:background="#8180B7">
 
     <EditText
         android:layout_width="match_parent"
@@ -45,8 +45,8 @@
         android:layout_margin="10dp"
         android:textAllCaps="false"
         android:textStyle="bold"
-        android:textColor="@android:color/black"
-        android:background="@android:color/white"
+        android:textColor="@android:color/white"
+        android:background="#535277"
         android:id="@+id/btn_add_event"
         />
 

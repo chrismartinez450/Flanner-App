@@ -12,7 +12,7 @@
         android:orientation="horizontal"
         android:paddingTop="8dp"
         android:paddingBottom="8dp"
-        android:background="@android:color/holo_orange_dark">
+        android:background="#3B3A4E">
 
         <ImageButton
             android:layout_width="40dp"
@@ -47,7 +47,7 @@
         android:orientation="horizontal"
         android:paddingTop="4dp"
         android:paddingBottom="4dp"
-        android:background="@android:color/holo_blue_bright">
+        android:background="#535277">
 
         <TextView
             android:layout_width="wrap_content"
