@@ -109,13 +109,13 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
     checkEmptyPassword(password);
     checkEmailPatterns(email);
     checkPasswordLength(password);
-    checkEmptyUsername(username);
+    checkUsernameLength(username);
   }
 
-  private void checkEmptyUsername(String username) {
-    if(username.isEmpty())
+  private void checkUsernameLength(String username) {
+    if(username.length() < 6)
     {
-      editTextUsername.setError("Username is required!");
+      editTextUsername.setError("Username must be at least 6 characters long!");
       editTextUsername.requestFocus();
     }
   }
