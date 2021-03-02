@@ -3,6 +3,7 @@ package com.example.flannerapp;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.View;
@@ -18,49 +19,62 @@ public class ForgotPassword extends AppCompatActivity {
 
     private EditText emailEditText;
     private Button resetPasswordButton;
-
-    FirebaseAuth auth;
+    private FirebaseAuth auth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forgot_password);
-
-        emailEditText = findViewById(R.id.et_email_forgot);
-        resetPasswordButton = findViewById(R.id.btn_resetPassword_forgot);
-
-        auth = FirebaseAuth.getInstance();
-
+        initializeAttributes();
         resetPasswordButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 resetPassword();
+
             }
         });
     }
 
+    private void initializeAttributes() {
+        emailEditText = findViewById(R.id.et_email_forgot);
+        resetPasswordButton = findViewById(R.id.btn_resetPassword_forgot);
+        auth = FirebaseAuth.getInstance();
+    }
+
     private void resetPassword() {
         String email = emailEditText.getText().toString().trim();
-
-        if (email.isEmpty()) {
-            emailEditText.setError("Email is required!");
-            emailEditText.requestFocus();
-        }
-
-        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            emailEditText.setError("Please provide valid email!");
-            emailEditText.requestFocus();
+        if (!checkEmptyEmail(email) || !checkInvalidEmail(email)) {
+            return;
         }
 
         auth.sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()) {
-                    Toast.makeText(ForgotPassword.this, "Check your email to reset your password!", Toast.LENGTH_LONG).show();
-                } else {
-                    Toast.makeText(ForgotPassword.this, "Try again! Something wrong happens!", Toast.LENGTH_LONG).show();
-                }
+            if (task.isSuccessful()) {
+                Toast.makeText(ForgotPassword.this, "Check your email to reset your password!", Toast.LENGTH_LONG).show();
+                startActivity(new Intent(ForgotPassword.this, MainActivity.class));
+            } else {
+                emailEditText.setError("Try again! Please check your email!");
+            }
             }
         });
+    }
+
+    private boolean checkInvalidEmail(String email) {
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            emailEditText.setError("Please provide valid email!");
+            emailEditText.requestFocus();
+            return false;
+        }
+        return true;
+    }
+
+    private boolean checkEmptyEmail(String email) {
+        if (email.isEmpty() || email == null) {
+            emailEditText.setError("Email is required!");
+            emailEditText.requestFocus();
+            return false;
+        }
+        return true;
     }
 }
