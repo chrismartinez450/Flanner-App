@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity"
     android:orientation="vertical"
-    android:background="@color/light_blue"
+    android:background="#3B3A4E"
     android:padding="16dp">
 
     <TextView
@@ -17,6 +17,7 @@
         android:layout_marginTop="10dp"
         android:fontFamily="@font/open_sans_bold"
         android:text="@string/signUpCapitalize"
+        android:textColor="#ffffff"
         android:textSize="24sp" />
 
     <com.google.android.material.textfield.TextInputLayout
@@ -31,8 +32,8 @@
             android:layout_height="wrap_content"
             android:inputType="textEmailAddress"
             android:hint="@string/email"
-            android:textColor="#000000"
-            android:textColorHint="#000000">
+            android:textColor="#ffffff"
+            android:textColorHint="#ffffff">
 
         </com.google.android.material.textfield.TextInputEditText>
 
@@ -51,8 +52,8 @@
             android:layout_height="wrap_content"
             android:hint="@string/fullName"
             android:inputType="text"
-            android:textColor="#000000"
-            android:textColorHint="#000000"
+            android:textColor="#ffffff"
+            android:textColorHint="#ffffff"
             >
 
         </com.google.android.material.textfield.TextInputEditText>
@@ -75,8 +76,8 @@
             android:layout_height="wrap_content"
             android:hint="@string/password"
             android:inputType="textPassword"
-            android:textColor="#000000"
-            android:textColorHint="#000000">
+            android:textColor="#ffffff"
+            android:textColorHint="#ffffff">
 
         </com.google.android.material.textfield.TextInputEditText>
 
@@ -126,6 +127,7 @@
         android:layout_marginTop="40dp"
         android:background="@drawable/btn_bg"
         android:text="@string/signUpCapitalize"
+        android:textColor="#ffffff"
         android:textSize="18sp" />
 
 </RelativeLayout>

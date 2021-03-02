@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/light_blue">
+    android:background="#3B3A4E">
 
     <TextView
         android:id="@+id/header_tracker"
@@ -13,7 +13,8 @@
         android:layout_marginTop="10dp"
         android:fontFamily="@font/open_sans_bold"
         android:text="@string/tracker"
-        android:textSize="24sp" />
+        android:textSize="24sp"
+        android:textColor="#ffffff"/>
 
 
 

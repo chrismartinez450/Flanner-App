@@ -13,4 +13,5 @@
     <string name="mainGoalQuestion">What\'s your main goal?</string>
     <string name="signUpCapitalize">SIGN UP</string>
     <string name="age">Age</string>
+    <string name="edit_profile">Edit Profile</string>
 </resources>
