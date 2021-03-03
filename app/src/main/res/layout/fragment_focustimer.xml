@@ -78,7 +78,7 @@
             android:layout_width="280dp"
             android:layout_height="55dp"
             android:background="#01B4CC"
-            android:fontFamily="sans-serif-medium"
+            android:fontFamily="@font/montserrat"
             android:text="Resume"
             android:textColor="#FFFFFF" />
 
