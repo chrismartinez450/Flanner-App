@@ -76,6 +76,7 @@ public class FocusTimerFragment extends Fragment {
         builder.setTitle("What is the subject of which you are studying?");
 
         final EditText input = new EditText(getActivity());
+        input.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         builder.setView(input);
 
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {

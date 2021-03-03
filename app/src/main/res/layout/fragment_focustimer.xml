@@ -51,38 +51,39 @@
             android:layout_height="55dp"
             android:layout_marginTop="30dp"
             android:background="#11B600"
+            android:fontFamily="sans-serif-medium"
             android:text="Start"
-            android:textColor="#FFFFFF"
-            />
+            android:textColor="#FFFFFF" />
 
         <Button
             android:id="@+id/btnStop"
             android:layout_width="280dp"
             android:layout_height="55dp"
             android:background="#CF0000"
+            android:fontFamily="sans-serif-medium"
             android:text="Finished"
-            android:textColor="#FFFFFF"
-            />
+            android:textColor="#FFFFFF" />
 
         <Button
             android:id="@+id/btnPause"
             android:layout_width="280dp"
             android:layout_height="55dp"
             android:background="#767676"
+            android:fontFamily="sans-serif-medium"
             android:text="Pause"
-            android:textColor="#FFFFFF"
-            />
+            android:textColor="#FFFFFF" />
 
         <Button
             android:id="@+id/btnResume"
             android:layout_width="280dp"
             android:layout_height="55dp"
             android:background="#01B4CC"
+            android:fontFamily="sans-serif-medium"
             android:text="Resume"
-            android:textColor="#FFFFFF"
-             />
+            android:textColor="#FFFFFF" />
 
 
     </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
 
