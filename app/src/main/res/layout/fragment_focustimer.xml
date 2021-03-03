@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#211D44">
+    android:background="#3B3A4E">
 
 
     <ImageView
@@ -42,7 +42,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="290dp"
-            android:textSize="62sp" />
+            android:textSize="62sp"
+            android:textColor="#ffffff"/>
 
         <Button
             android:id="@+id/btnStart"
@@ -60,16 +61,16 @@
             android:layout_height="55dp"
             android:background="#CF0000"
             android:text="Finished"
-            android:textColor="#470214"
+            android:textColor="#FFFFFF"
             />
 
         <Button
             android:id="@+id/btnPause"
             android:layout_width="280dp"
             android:layout_height="55dp"
-            android:background="#01B4CC"
+            android:background="#767676"
             android:text="Pause"
-            android:textColor="#000000"
+            android:textColor="#FFFFFF"
             />
 
         <Button
@@ -78,7 +79,7 @@
             android:layout_height="55dp"
             android:background="#01B4CC"
             android:text="Resume"
-            android:textColor="#000000"
+            android:textColor="#FFFFFF"
              />
 
 

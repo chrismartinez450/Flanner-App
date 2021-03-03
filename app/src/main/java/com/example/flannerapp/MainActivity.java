@@ -64,6 +64,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     String email = editTextEmail.getText().toString().trim();
     String password = editTextPassword.getText().toString().trim();
 
+    
+
     if (checkInvalidEmailAndPassword(email, password)) return;
     authenticationFirebase(email, password);
   }
