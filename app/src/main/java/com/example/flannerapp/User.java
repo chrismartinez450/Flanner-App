@@ -1,15 +1,16 @@
 package com.example.flannerapp;
 
 public class User {
-  public String fullName, age, email;
+  public String fullName, age, email, username;
 
   public User() {
   }
 
-  public User(String fullName, String age, String email) {
+  public User(String fullName, String age, String email, String username) {
     this.fullName = fullName;
     this.age = age;
     this.email = email;
+    this.username = username;
   }
 
   public String getFullName() {
@@ -34,5 +35,13 @@ public class User {
 
   public void setEmail(String email) {
     this.email = email;
+  }
+
+  public String getUsername() {
+    return username;
+  }
+
+  public void setUsername(String username) {
+    this.username = username;
   }
 }
