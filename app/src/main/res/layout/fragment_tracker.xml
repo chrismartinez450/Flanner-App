@@ -15,7 +15,10 @@
         android:text="@string/tracker"
         android:textSize="24sp" />
 
-
-
+    <com.github.mikephil.charting.charts.BarChart
+        android:id="@+id/tracker_chart"
+        android:layout_width="match_parent"
+        android:layout_height="315dp"
+        android:layout_marginTop="55dp" />
 
 </RelativeLayout>
