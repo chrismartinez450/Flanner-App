@@ -20,7 +20,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 public class RegisterUser extends AppCompatActivity implements View.OnClickListener {
   private TextView banner, registerUserButton;
-  private EditText editTextFullName, editTextAge, editTextEmail, editTextPassword, editTextPassword1, editTextUsername;
+  private EditText editTextFullName, editTextAge, editTextEmail, editTextPassword, editTextConfirmPassword, editTextUsername;
   private FirebaseAuth mAuth;
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +50,7 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
     editTextAge = findViewById(R.id.et_age_register);
     editTextEmail = findViewById(R.id.et_email_register);
     editTextPassword = findViewById(R.id.et_password_register);
-    editTextPassword1 = findViewById(R.id.et_password1_register);
+    editTextConfirmPassword = findViewById(R.id.et_confirmpassword_register);
     editTextUsername = findViewById(R.id.et_username_register);
   }
 
@@ -64,7 +64,7 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
     final String age = editTextAge.getText().toString().trim();
     final String fullName = editTextFullName.getText().toString().trim();
     final String username = editTextUsername.getText().toString().trim();
-    String password1 = editTextPassword1.getText().toString().trim();
+    String password1 = editTextConfirmPassword.getText().toString().trim();
     String password = editTextPassword.getText().toString().trim();
     checkValidAttributes(email, age, fullName, password, password1 , username);
     createUserInFirebase(email, age, fullName, password, username);
@@ -105,14 +105,14 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
     Toast.makeText(RegisterUser.this, "Check your email to verify your account!", Toast.LENGTH_LONG).show();
   }
 
-  private void checkValidAttributes(String email, String age, String fullName, String password, String password1, String username) {
+  private void checkValidAttributes(String email, String age, String fullName, String password, String confirmpassword, String username) {
     checkEmptyFullName(fullName);
     checkEmptyAge(age);
     checkEmptyPassword(password);
     checkEmailPatterns(email);
     checkPasswordLength(password);
     checkUsernameLength(username);
-    checkPasswordMatches(password,password1);
+    checkConfirmPassword(password,confirmpassword);
   }
 
   private void checkUsernameLength(String username) {
@@ -129,12 +129,17 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
       editTextPassword.requestFocus();
     }
   }
-private void checkPasswordMatches( String password, String password1) {
-  if (!password1.equals(password)) {
-    editTextPassword1.setError("Password does not match!");
-    editTextPassword1.requestFocus();
+private void checkConfirmPassword( String password, String confirmpassword) {
+  if (!confirmpassword.equals(password)) {
+    editTextConfirmPassword.setError("Password does not match!");
+    editTextConfirmPassword.requestFocus();
+  }
+  if(confirmpassword.isEmpty()){
+    editTextConfirmPassword.setError("Password cannot be empty!");
+    editTextConfirmPassword.requestFocus();
   }
 }
+
   private void checkEmailPatterns(String email) {
     if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
       editTextEmail.setError("Please provide valid email!");
