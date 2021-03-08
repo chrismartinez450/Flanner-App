@@ -95,6 +95,20 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/et_email_register" />
+    <EditText
+        android:id="@+id/et_password1_register"
+        android:layout_width="380dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="45dp"
+        android:ems="10"
+        android:hint="Confirm Password"
+        android:textColorHint="#ffffff"
+        android:inputType="textPassword"
+        android:textSize="24sp"
+        app:layout_constraintHorizontal_bias="0.483"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_email_register" />
 
     <Button
         android:id="@+id/btn_registerUser_register"
