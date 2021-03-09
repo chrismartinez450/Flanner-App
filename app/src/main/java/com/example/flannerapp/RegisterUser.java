@@ -64,7 +64,9 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
     final String fullName = editTextFullName.getText().toString().trim();
     final String username = editTextUsername.getText().toString().trim();
     String password = editTextPassword.getText().toString().trim();
-    checkValidAttributes(email, age, fullName, password, username);
+    if (!checkEmptyFullName(fullName) || !checkEmptyAge(age) || !checkEmptyPassword(password) || !checkEmailPatterns(email) || !checkPasswordLength(password) || !checkUsernameLength(username)) {
+      return;
+    }
     createUserInFirebase(email, age, fullName, password, username);
   }
 
@@ -103,56 +105,59 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
     Toast.makeText(RegisterUser.this, "Check your email to verify your account!", Toast.LENGTH_LONG).show();
   }
 
-  private void checkValidAttributes(String email, String age, String fullName, String password, String username) {
-    checkEmptyFullName(fullName);
-    checkEmptyAge(age);
-    checkEmptyPassword(password);
-    checkEmailPatterns(email);
-    checkPasswordLength(password);
-    checkUsernameLength(username);
-  }
-
-  private void checkUsernameLength(String username) {
+  private boolean checkUsernameLength(String username) {
     if(username.length() < 6)
     {
       editTextUsername.setError("Username must be at least 6 characters long!");
       editTextUsername.requestFocus();
+      return false;
     }
+    return true;
   }
 
-  private void checkPasswordLength(String password) {
+  private boolean checkPasswordLength(String password) {
     if (password.length() < 6) {
       editTextPassword.setError("Password must be at least 6 characters!");
       editTextPassword.requestFocus();
+      return false;
     }
+    return true;
   }
 
-  private void checkEmailPatterns(String email) {
+  private boolean checkEmailPatterns(String email) {
     if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
       editTextEmail.setError("Please provide valid email!");
       editTextEmail.requestFocus();
+      return false;
     }
+    return true;
   }
 
-  private void checkEmptyPassword(String password) {
+  private boolean checkEmptyPassword(String password) {
     if (password.isEmpty()) {
       editTextPassword.setError("Password is required!");
       editTextPassword.requestFocus();
+      return false;
     }
+    return true;
   }
 
-  private void checkEmptyAge(String age) {
+  private boolean checkEmptyAge(String age) {
     if (age.isEmpty()) {
       editTextAge.setError("Age is required!");
       editTextAge.requestFocus();
+      return false;
     }
+    return true;
   }
 
-  private void checkEmptyFullName(String fullName) {
+  private boolean checkEmptyFullName(String fullName) {
     if (fullName.isEmpty()) {
       editTextFullName.setError("Full name is required!");
       editTextFullName.requestFocus();
+      return false;
     }
+    return true;
   }
 
 
