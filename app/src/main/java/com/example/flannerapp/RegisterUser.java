@@ -20,7 +20,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 public class RegisterUser extends AppCompatActivity implements View.OnClickListener {
   private TextView banner, registerUserButton;
-  private EditText editTextFullName, editTextAge, editTextEmail, editTextPassword, editTextUsername;
+  private EditText editTextFullName, editTextAge, editTextEmail, editTextPassword, editTextUsername, editTextConfirmPassword;
   private FirebaseAuth mAuth;
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +51,7 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
     editTextEmail = findViewById(R.id.et_email_register);
     editTextPassword = findViewById(R.id.et_password_register);
     editTextUsername = findViewById(R.id.et_username_register);
+    editTextConfirmPassword = findViewById(R.id.et_confirmPassword_register);
   }
 
   private void performButtons() {
@@ -64,7 +65,8 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
     final String fullName = editTextFullName.getText().toString().trim();
     final String username = editTextUsername.getText().toString().trim();
     String password = editTextPassword.getText().toString().trim();
-    if (!checkEmptyFullName(fullName) || !checkEmptyAge(age) || !checkEmptyPassword(password) || !checkEmailPatterns(email) || !checkPasswordLength(password) || !checkUsernameLength(username)) {
+    String confirmpassword = editTextConfirmPassword.getText().toString().trim();
+    if (!checkEmptyFullName(fullName) || !checkEmptyAge(age) || !checkEmptyPassword(password) || !checkEmailPatterns(email) || !checkPasswordLength(password) || !checkUsernameLength(username) || !checkIfEmpty(confirmpassword) || !checkMatching(confirmpassword,password)) {
       return;
     }
     createUserInFirebase(email, age, fullName, password, username);
@@ -123,6 +125,23 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
     }
     return true;
   }
+  private boolean checkIfEmpty(String confirmpassword){
+    if(confirmpassword.isEmpty()){
+      editTextConfirmPassword.setError("Cannot be empty!");
+      editTextConfirmPassword.requestFocus();
+      return false;
+    }
+    return true;
+  }
+private boolean checkMatching(String confirmpassword, String password)
+{
+  if(!confirmpassword.equals(password)){
+    editTextConfirmPassword.setError("Passwords do not match!");
+    editTextConfirmPassword.requestFocus();
+    return false;
+  }
+  return true;
+}
 
   private boolean checkEmailPatterns(String email) {
     if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
