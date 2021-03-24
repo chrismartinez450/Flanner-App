@@ -1,8 +1,7 @@
 package com.example.flannerapp;
 
-import android.graphics.Color;
+import android.icu.text.DecimalFormat;
 import android.os.Bundle;
-import android.service.autofill.Dataset;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,24 +12,23 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.components.LegendEntry;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.formatter.DefaultValueFormatter;
 import com.github.mikephil.charting.formatter.ValueFormatter;
-import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.protobuf.FloatValue;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -42,7 +40,7 @@ public class TrackerFragment extends Fragment {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private CollectionReference userPath = db.collection("Users");
     private ArrayList<UserTimer> tList = new ArrayList<>();
-    private double[] barValues = new double[7];
+    private float[] barValues = new float[7];
     private Date currentDate = Calendar.getInstance().getTime();
     private String userID;
     private FirebaseUser user;
@@ -57,7 +55,7 @@ public class TrackerFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View root = inflater.inflate(R.layout.fragment_tracker, container, false);
-        setData(root);
+        setData();
         lvTracker = root.findViewById(R.id.tList);
         userPath
                 .document(userID)
@@ -195,7 +193,7 @@ public class TrackerFragment extends Fragment {
     private ArrayList<BarEntry> dataValues() {
         final ArrayList<BarEntry> dv = new ArrayList<>();
         String[] strArr = new String[7];
-        String[] tempArr = new String[2];
+        String[] tempArr;
         int j = 6;
         for (int i = 0; i < DAYS.length; i++) {
             tempArr = DAYS[i].split("/");
@@ -225,7 +223,7 @@ public class TrackerFragment extends Fragment {
         return dv;
     }
 
-    public void setData(View root) {
+    public void setData() {
         db = FirebaseFirestore.getInstance();
         user = FirebaseAuth.getInstance().getCurrentUser();
         userID = user.getUid();
@@ -233,11 +231,13 @@ public class TrackerFragment extends Fragment {
     }
 
     private void initializeLayout(View root) {
+
         mBarchart = root.findViewById(R.id.tracker_chart);
         configureChartAppearance();
         mBarchart.setDrawValueAboveBar(false);
         BarDataSet bds0 = new BarDataSet(dataValues(), "");
         bds0.setValueTextSize(10f);
+        bds0.setValueFormatter(new DefaultValueFormatter(4));
         BarData bd0 = new BarData(bds0);
         mBarchart.setData(bd0);
         mBarchart.invalidate();
