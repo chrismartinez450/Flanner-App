@@ -66,7 +66,7 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
     final String username = editTextUsername.getText().toString().trim();
     String password = editTextPassword.getText().toString().trim();
     String confirmpassword = editTextConfirmPassword.getText().toString().trim();
-    if (!checkEmptyFullName(fullName) || !checkEmptyAge(age) || !checkEmptyPassword(password) || !checkEmailPatterns(email) || !checkPasswordLength(password) || !checkUsernameLength(username) || !checkIfEmpty(confirmpassword) || !checkMatching(confirmpassword,password)) {
+    if (!checkUsernameSpace(username) || !checkUsernameLength(username) || !checkEmptyFullName(fullName) || !checkEmptyAge(age) || !checkEmailPatterns(email) || !checkBothPasswordsEmpty(confirmpassword, password) || !checkPasswordLength(password) ||  !checkIfEmpty(confirmpassword) ||  !checkMatching(confirmpassword,password)) {
       return;
     }
     createUserInFirebase(email, age, fullName, password, username);
@@ -107,6 +107,15 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
     Toast.makeText(RegisterUser.this, "Check your email to verify your account!", Toast.LENGTH_LONG).show();
   }
 
+  private boolean checkUsernameSpace(String username){
+    if (username.contains(" ")) {
+      editTextUsername.setError("Username cannot have spaces!");
+      editTextUsername.requestFocus();
+      return false;
+    }
+    return true;
+  }
+
   private boolean checkUsernameLength(String username) {
     if(username.length() < 6)
     {
@@ -116,9 +125,8 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
     }
     return true;
   }
-
   private boolean checkPasswordLength(String password) {
-    if (password.length() < 6) {
+    if(password.length() < 6) {
       editTextPassword.setError("Password must be at least 6 characters!");
       editTextPassword.requestFocus();
       return false;
@@ -129,6 +137,16 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
     if(confirmpassword.isEmpty()){
       editTextConfirmPassword.setError("Cannot be empty!");
       editTextConfirmPassword.requestFocus();
+      return false;
+    }
+    return true;
+  }
+  private boolean checkBothPasswordsEmpty( String confirmpassword, String password){
+    if(password.isEmpty() && confirmpassword.isEmpty()){
+      editTextConfirmPassword.setError("Cannot be empty!");
+      editTextConfirmPassword.requestFocus();
+      editTextPassword.setError("Cannot be empty!");
+      editTextPassword.requestFocus();
       return false;
     }
     return true;
@@ -147,15 +165,6 @@ private boolean checkMatching(String confirmpassword, String password)
     if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
       editTextEmail.setError("Please provide valid email!");
       editTextEmail.requestFocus();
-      return false;
-    }
-    return true;
-  }
-
-  private boolean checkEmptyPassword(String password) {
-    if (password.isEmpty()) {
-      editTextPassword.setError("Password is required!");
-      editTextPassword.requestFocus();
       return false;
     }
     return true;
