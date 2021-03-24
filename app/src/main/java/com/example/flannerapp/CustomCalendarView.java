@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -13,6 +14,7 @@ import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import androidx.annotation.NonNull;
@@ -26,6 +28,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -57,6 +60,8 @@ public class CustomCalendarView extends LinearLayout {
   private CollectionReference userPath = db.collection("Users");
   private FirebaseUser user;
   private String userID;
+  private RadioGroup radioGroup;
+  private int radioButtonChoice = 1; // =1 for all events, = 2 for upcoming events only
 
   public CustomCalendarView(Context context) {
     super(context);
@@ -83,6 +88,8 @@ public class CustomCalendarView extends LinearLayout {
         setUpCalendar();
       }
     });
+
+    radioButtonActivity();
 
     gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
       @Override
@@ -142,6 +149,9 @@ public class CustomCalendarView extends LinearLayout {
 
   public void updateEventsListAdapter(final OnTaskedCompleted listener) {
     eventsList.clear();
+    listViewDataTable(radioButtonChoice);
+
+    // Add the data to display on the calendar
     userPath.document(userID).collection(CALENDAR_EVENTS)
       .orderBy(DATE, Query.Direction.ASCENDING)
       .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
@@ -151,8 +161,6 @@ public class CustomCalendarView extends LinearLayout {
           Events currentEvent = documentSnapshot.toObject(Events.class);
           eventsList.add(currentEvent);
         }
-        CustomCalendarListAdapter ccAdapter = new CustomCalendarListAdapter(getContext(), R.layout.adapter_event_view_layout, eventsList);
-        lvEvents.setAdapter(ccAdapter);
         listener.onSuccess(eventsList);
       }
     }).addOnFailureListener(new OnFailureListener() {
@@ -175,6 +183,7 @@ public class CustomCalendarView extends LinearLayout {
     currentDate = view.findViewById(R.id.current_date);
     gridView = view.findViewById(R.id.gridView);
     lvEvents = view.findViewById(R.id.lv_events);
+    radioGroup = view.findViewById(R.id.radioButton_calendar);
     user = FirebaseAuth.getInstance().getCurrentUser();
     userID = user.getUid();
   }
@@ -199,6 +208,70 @@ public class CustomCalendarView extends LinearLayout {
       }
       @Override
       public void onFail() {
+      }
+    });
+  }
+
+  private Date ConvertStringToDate(String eventDate) {
+    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+    Date date = null;
+    try {
+      date = format.parse(eventDate);
+    } catch (ParseException e) {
+      e.printStackTrace();
+    }
+
+    return date;
+  }
+
+  public void radioButtonActivity() {
+    radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+      @Override
+      public void onCheckedChanged(RadioGroup group, int checkedId) {
+        switch (radioGroup.getCheckedRadioButtonId()) {
+          case R.id.radioButton_allEvents_calendar:
+            radioButtonChoice = 1;
+            listViewDataTable(radioButtonChoice);
+            break;
+          case R.id.radioButton_upcomingEvents_calendar:
+            radioButtonChoice = 2;
+            listViewDataTable(radioButtonChoice);
+            break;
+          default:
+            break;
+        }
+      }
+    });
+
+  }
+
+  private void listViewDataTable(final int radioButtonChoice) {
+    final List<Events> showEventsList = new ArrayList();
+    final Date date = new Date();
+    // Adding the data for the list view, nothing to do with the calendar data
+    userPath.document(userID).collection(CALENDAR_EVENTS)
+      .orderBy(DATE, Query.Direction.ASCENDING)
+      .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+      @Override
+      public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+        for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+          Events currentEvent = documentSnapshot.toObject(Events.class);
+          Date currentDate = ConvertStringToDate(currentEvent.getDATE());
+          if (radioButtonChoice == 1) {
+            showEventsList.add(currentEvent);
+          } else { // radioButtonChoice == 2
+            if (currentDate.compareTo(date) > 0) {
+              showEventsList.add(currentEvent);
+            }
+          }
+        }
+        CustomCalendarListAdapter ccAdapter = new CustomCalendarListAdapter(getContext(), R.layout.adapter_event_view_layout, showEventsList);
+        lvEvents.setAdapter(ccAdapter);
+      }
+    }).addOnFailureListener(new OnFailureListener() {
+      @Override
+      public void onFailure(@NonNull Exception e) {
+        Log.d("test", "no data");
       }
     });
   }

@@ -130,6 +130,30 @@
         android:numColumns="7">
     </GridView>
 
+    <RadioGroup
+        android:id="@+id/radioButton_calendar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/radioButton_allEvents_calendar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="All Events"
+            android:layout_weight="1"
+            android:textColor="@color/common_google_signin_btn_text_dark_default"
+            android:checked="true"/>
+
+        <RadioButton
+            android:id="@+id/radioButton_upcomingEvents_calendar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Upcoming Events"
+            android:textColor="@color/common_google_signin_btn_text_dark_default"
+            android:layout_weight="1" />
+    </RadioGroup>
+
 
     <LinearLayout
         android:layout_width="match_parent"
