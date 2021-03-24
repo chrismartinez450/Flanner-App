@@ -65,8 +65,12 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
     final String fullName = editTextFullName.getText().toString().trim();
     final String username = editTextUsername.getText().toString().trim();
     String password = editTextPassword.getText().toString().trim();
-    String confirmpassword = editTextConfirmPassword.getText().toString().trim();
-    if (!checkUsernameSpace(username) || !checkUsernameLength(username) || !checkEmptyFullName(fullName) || !checkEmptyAge(age) || !checkEmailPatterns(email) || !checkBothPasswordsEmpty(confirmpassword, password) || !checkPasswordLength(password) ||  !checkIfEmpty(confirmpassword) ||  !checkMatching(confirmpassword,password)) {
+    String confirmPassword = editTextConfirmPassword.getText().toString().trim();
+    if (!checkUsernameSpace(username) | !checkUsernameLength(username)
+      | !checkEmptyFullName(fullName) | !checkEmptyAge(age)
+      | !checkEmailPatterns(email) | !checkBothPasswordsEmpty(confirmPassword, password)
+      | !checkPasswordLength(password) | !checkIfEmpty(confirmPassword)
+      | !checkMatching(confirmPassword, password)) {
       return;
     }
     createUserInFirebase(email, age, fullName, password, username);
