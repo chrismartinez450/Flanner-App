@@ -1,4 +1,4 @@
-package com.example.flannerapp;
+package com.example.flannerapp.DatabaseUser;
 
 import java.util.Date;
 

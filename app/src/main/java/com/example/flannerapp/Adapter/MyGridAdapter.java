@@ -1,4 +1,4 @@
-package com.example.flannerapp;
+package com.example.flannerapp.Adapter;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -11,6 +11,9 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.example.flannerapp.DatabaseUser.Events;
+import com.example.flannerapp.R;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

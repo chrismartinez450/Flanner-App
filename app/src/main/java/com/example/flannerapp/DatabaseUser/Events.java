@@ -1,4 +1,4 @@
-package com.example.flannerapp;
+package com.example.flannerapp.DatabaseUser;
 
 public class Events {
   String EVENT, TIME, DATE, MONTH, YEAR;
