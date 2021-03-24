@@ -17,6 +17,14 @@
         android:textColor="#ffffff"
         android:textSize="24sp" />
 
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Note: 60 Minutes = 1"
+        android:textAlignment="center"
+        android:textColor="@color/common_google_signin_btn_text_dark_default" />
+
     <com.github.mikephil.charting.charts.BarChart
         android:id="@+id/tracker_chart"
         android:layout_width="match_parent"
@@ -42,7 +50,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="29"
-            android:text="Time Studied"
+            android:text="Time Studied\n(HH:MM:SS)"
             android:textColor="@color/common_google_signin_btn_text_dark_default"
             android:textStyle="bold" />
 

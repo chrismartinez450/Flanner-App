@@ -61,15 +61,17 @@ public class UserTimer {
         this.subject = subject;
     }
 
-    public double convertChronoTime() {
-        double result = 0;
+    public float convertChronoTime() {
+        float result = 0;
         String tempString[] = this.getChronoTime().split(":");
 
         if (tempString.length == 3) {
-            result = Double.parseDouble(tempString[0]);
-            result += (Double.parseDouble(tempString[1]) / 60);
+            result = Float.parseFloat(tempString[0]);
+            result += (Float.parseFloat(tempString[1]) / 60);
+            result += (Float.parseFloat(tempString[2]) / 3600);
         } else if (tempString.length == 2) {
-            result = (Double.parseDouble(tempString[0]) / 60);
+            result = (Float.parseFloat(tempString[0]) / 60);
+            result += (Float.parseFloat(tempString[1]) / 3600);
         }
 
         return result;
