@@ -61,11 +61,16 @@ public class UserTimer {
         this.subject = subject;
     }
 
-    public int convertChronoTimeToHours() {
-        int result = 0;
+    public double convertChronoTime() {
+        double result = 0;
         String tempString[] = this.getChronoTime().split(":");
 
-        if (tempString.length == 3) result = Integer.parseInt(tempString[0]);
+        if (tempString.length == 3) {
+            result = Double.parseDouble(tempString[0]);
+            result += (Double.parseDouble(tempString[1]) / 60);
+        } else if (tempString.length == 2) {
+            result = (Double.parseDouble(tempString[0]) / 60);
+        }
 
         return result;
     }

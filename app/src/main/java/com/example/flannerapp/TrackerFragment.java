@@ -41,7 +41,7 @@ public class TrackerFragment extends Fragment {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private CollectionReference userPath = db.collection("Users");
     private ArrayList<UserTimer> tList = new ArrayList<>();
-    private int[] barValues = new int[7];
+    private double[] barValues = new double[7];
     private Date currentDate = Calendar.getInstance().getTime();
     private String userID;
     private FirebaseUser user;
@@ -202,25 +202,25 @@ public class TrackerFragment extends Fragment {
         }
         for (int i = 0; i < tList.size(); i++) {
             if (Integer.parseInt(tList.get(i).getDay()) == (Integer.parseInt(strArr[0]))) {
-                barValues[0] += tList.get(i).convertChronoTimeToHours();
+                barValues[0] += tList.get(i).convertChronoTime();
             } else if (Integer.parseInt(tList.get(i).getDay()) == (Integer.parseInt(strArr[1]))) {
-                barValues[1] += tList.get(i).convertChronoTimeToHours();
+                barValues[1] += tList.get(i).convertChronoTime();
             } else if (Integer.parseInt(tList.get(i).getDay()) == (Integer.parseInt(strArr[2]))) {
-                barValues[2] += tList.get(i).convertChronoTimeToHours();
+                barValues[2] += tList.get(i).convertChronoTime();
             } else if (Integer.parseInt(tList.get(i).getDay()) == (Integer.parseInt(strArr[3]))) {
-                barValues[3] += tList.get(i).convertChronoTimeToHours();
+                barValues[3] += tList.get(i).convertChronoTime();
             } else if (Integer.parseInt(tList.get(i).getDay()) == (Integer.parseInt(strArr[4]))) {
-                barValues[4] += tList.get(i).convertChronoTimeToHours();
+                barValues[4] += tList.get(i).convertChronoTime();
             } else if (Integer.parseInt(tList.get(i).getDay()) == (Integer.parseInt(strArr[5]))) {
-                barValues[5] += tList.get(i).convertChronoTimeToHours();
+                barValues[5] += tList.get(i).convertChronoTime();
             } else if (Integer.parseInt(tList.get(i).getDay()) == (Integer.parseInt(strArr[6]))) {
-                barValues[6] += tList.get(i).convertChronoTimeToHours();
+                barValues[6] += tList.get(i).convertChronoTime();
             }
         }
 
         for (int i = 0; i < 7; i++) {
 
-            dv.add(new BarEntry(i, barValues[i]));
+            dv.add(new BarEntry(i, (float) barValues[i]));
         }
         return dv;
     }
