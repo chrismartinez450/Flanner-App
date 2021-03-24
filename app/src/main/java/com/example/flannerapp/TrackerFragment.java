@@ -2,6 +2,7 @@ package com.example.flannerapp;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.service.autofill.Dataset;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -219,7 +220,6 @@ public class TrackerFragment extends Fragment {
         }
 
         for (int i = 0; i < 7; i++) {
-
             dv.add(new BarEntry(i, (float) barValues[i]));
         }
         return dv;
@@ -235,11 +235,14 @@ public class TrackerFragment extends Fragment {
     private void initializeLayout(View root) {
         mBarchart = root.findViewById(R.id.tracker_chart);
         configureChartAppearance();
+        mBarchart.setDrawValueAboveBar(false);
         BarDataSet bds0 = new BarDataSet(dataValues(), "");
+        bds0.setValueTextSize(10f);
         BarData bd0 = new BarData(bds0);
         mBarchart.setData(bd0);
         mBarchart.invalidate();
         mBarchart.refreshDrawableState();
+
 
     }
 
