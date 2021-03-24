@@ -6,17 +6,34 @@ public class UserTimer {
     private String date;
     private String chronoTime;
     private String subject;
+    private long timeInMilli;
 
 
-    public UserTimer(String date, String chronoTime, String subject) {
+    public UserTimer(String date, String chronoTime, String subject, long timeInMilli) {
         this.date = date;
         this.chronoTime = chronoTime;
         this.subject = subject;
+        this.timeInMilli = timeInMilli;
 
     }
 
-    public UserTimer(){
+    public UserTimer() {
         // no arg constructor.
+    }
+
+    public long getTimeInMilli() {
+        return timeInMilli;
+    }
+
+    public void setTimeInMilli(long timeInMilli) {
+        this.timeInMilli = timeInMilli;
+    }
+
+    public String getDay() {
+        String[] day = new String[3];
+        day = date.split("-");
+
+        return day[2];
     }
 
     public String getDate() {
@@ -42,5 +59,19 @@ public class UserTimer {
 
     public void setSubject(String subject) {
         this.subject = subject;
+    }
+
+    public double convertChronoTime() {
+        double result = 0;
+        String tempString[] = this.getChronoTime().split(":");
+
+        if (tempString.length == 3) {
+            result = Double.parseDouble(tempString[0]);
+            result += (Double.parseDouble(tempString[1]) / 60);
+        } else if (tempString.length == 2) {
+            result = (Double.parseDouble(tempString[0]) / 60);
+        }
+
+        return result;
     }
 }

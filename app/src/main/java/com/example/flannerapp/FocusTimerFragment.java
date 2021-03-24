@@ -47,6 +47,7 @@ public class FocusTimerFragment extends Fragment {
 
 
 
+
   @Nullable
   @Override
   public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -62,7 +63,6 @@ public class FocusTimerFragment extends Fragment {
     btnStop.setAlpha(0);
     btnPause.setAlpha(0);
     btnResume.setAlpha(0);
-
     roundingAnim = AnimationUtils.loadAnimation(getActivity(), R.anim.rounding);
     Typeface MMedium = Typeface.createFromAsset(getActivity().getAssets(), "fonts/MMedium.ttf");
     btnStart.setTypeface(MMedium);
@@ -165,11 +165,12 @@ public class FocusTimerFragment extends Fragment {
 
   public void setUserTimerHistory(Date date, String time, String subject) {
 
-    UserTimer currentUserTimer = new UserTimer(timerDateFormat.format(date), time, subject);
-    currentUserTimer.setSubject(subject);
-    user = FirebaseAuth.getInstance().getCurrentUser();
-    userID = user.getUid();
-    userPath.document(userID).collection(FOCUS_TIMER_HISTORY).add(currentUserTimer);
+      UserTimer currentUserTimer = new UserTimer(timerDateFormat.format(date), time, subject, currentTime.getTime()
+      );
+      currentUserTimer.setSubject(subject);
+      user = FirebaseAuth.getInstance().getCurrentUser();
+      userID = user.getUid();
+      userPath.document(userID).collection(FOCUS_TIMER_HISTORY).add(currentUserTimer);
 
   }
 
