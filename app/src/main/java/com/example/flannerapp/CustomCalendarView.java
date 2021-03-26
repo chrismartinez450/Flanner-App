@@ -13,13 +13,13 @@ import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import com.example.flannerapp.Adapter.CustomCalendarListAdapter;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import com.example.flannerapp.Adapter.MyGridAdapter;
 import com.example.flannerapp.DatabaseUser.Events;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -55,7 +55,7 @@ public class CustomCalendarView extends LinearLayout {
   private SimpleDateFormat yearFormat = new SimpleDateFormat("yyyy", Locale.ENGLISH);
   private SimpleDateFormat eventDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
   private MyGridAdapter myGridAdapter;
-  private ListView lvEvents;
+  // private ListView lvEvents;
   private AlertDialog alertDialog;
   private List<Date> dates = new ArrayList();
   private final List<Events> eventsList = new ArrayList();
@@ -65,6 +65,9 @@ public class CustomCalendarView extends LinearLayout {
   private String userID;
   private RadioGroup radioGroup;
   private int radioButtonChoice = 1; // =1 for all events, = 2 for upcoming events only
+  private RecyclerView mRecyclerView;
+  private RecyclerView.Adapter mAdapter;
+  private RecyclerView.LayoutManager mLayoutManager;
 
   public CustomCalendarView(Context context) {
     super(context);
@@ -185,10 +188,14 @@ public class CustomCalendarView extends LinearLayout {
     previousButton = view.findViewById(R.id.previousBtn);
     currentDate = view.findViewById(R.id.current_date);
     gridView = view.findViewById(R.id.gridView);
-    lvEvents = view.findViewById(R.id.lv_events);
+    // lvEvents = view.findViewById(R.id.lv_events);
     radioGroup = view.findViewById(R.id.radioButton_calendar);
     user = FirebaseAuth.getInstance().getCurrentUser();
     userID = user.getUid();
+    mRecyclerView = findViewById(R.id.recyclerView);
+    mRecyclerView.setHasFixedSize(true);
+    mLayoutManager = new LinearLayoutManager(getContext());
+    mAdapter = new ExampleAdapter(new ArrayList<EventCalendarCardView>());
   }
 
   private void setUpCalendar() {
@@ -250,6 +257,7 @@ public class CustomCalendarView extends LinearLayout {
 
   private void listViewDataTable(final int radioButtonChoice) {
     final List<Events> showEventsList = new ArrayList();
+    final ArrayList<EventCalendarCardView> exampleList = new ArrayList<>();
     final Date date = new Date();
     // Adding the data for the list view, nothing to do with the calendar data
     userPath.document(userID).collection(CALENDAR_EVENTS)
@@ -268,8 +276,14 @@ public class CustomCalendarView extends LinearLayout {
             }
           }
         }
-        CustomCalendarListAdapter ccAdapter = new CustomCalendarListAdapter(getContext(), R.layout.adapter_event_view_layout, showEventsList);
-        lvEvents.setAdapter(ccAdapter);
+        for (Events showEventsItem : showEventsList) {
+          exampleList.add(new EventCalendarCardView(showEventsItem.getTIME(), showEventsItem.getEVENT(), showEventsItem.getDATE()));
+        }
+        mAdapter = new ExampleAdapter(exampleList);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.setAdapter(mAdapter);
+        // CustomCalendarListAdapter ccAdapter = new CustomCalendarListAdapter(getContext(), R.layout.adapter_event_view_layout, showEventsList);
+        // lvEvents.setAdapter(ccAdapter);
       }
     }).addOnFailureListener(new OnFailureListener() {
       @Override
