@@ -18,8 +18,10 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import com.example.flannerapp.Adapter.CalendarEventRecycleViewAdapter;
 import com.example.flannerapp.Adapter.MyGridAdapter;
 import com.example.flannerapp.DatabaseUser.Events;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -39,6 +41,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
+
+import yuku.ambilwarna.AmbilWarnaDialog;
 
 public class CustomCalendarView extends LinearLayout {
 
@@ -68,6 +72,7 @@ public class CustomCalendarView extends LinearLayout {
   private RecyclerView mRecyclerView;
   private RecyclerView.Adapter mAdapter;
   private RecyclerView.LayoutManager mLayoutManager;
+  private int cardViewBackgroundColor = ContextCompat.getColor(getContext(), R.color.colorPrimary);
 
   public CustomCalendarView(Context context) {
     super(context);
@@ -100,6 +105,7 @@ public class CustomCalendarView extends LinearLayout {
     gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
       @Override
       public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setCancelable(true);
         final View addView = LayoutInflater.from(parent.getContext()).inflate(R.layout.add_newevent_layout, null);
@@ -107,6 +113,8 @@ public class CustomCalendarView extends LinearLayout {
         final TextView eventTime = addView.findViewById(R.id.cv_eventTime);
         ImageButton setTime = addView.findViewById(R.id.set_event_time);
         final Button addEvent = addView.findViewById(R.id.btn_add_event);
+        final Button colorSelectButton = addView.findViewById(R.id.btn_color_select_calendar);
+        colorSelectButton.setBackgroundColor(cardViewBackgroundColor);
         setTime.setOnClickListener(new OnClickListener() {
           @Override
           public void onClick(View v) {
@@ -128,13 +136,29 @@ public class CustomCalendarView extends LinearLayout {
             timePickerDialog.show();
           }
         });
+        colorSelectButton.setOnClickListener(new OnClickListener() {
+          @Override
+          public void onClick(View v) {
+            AmbilWarnaDialog colorPicker = new AmbilWarnaDialog(getContext(), cardViewBackgroundColor, new AmbilWarnaDialog.OnAmbilWarnaListener() {
+              @Override
+              public void onCancel(AmbilWarnaDialog dialog) {
+              }
+              @Override
+              public void onOk(AmbilWarnaDialog dialog, int color) {
+                cardViewBackgroundColor = color;
+                colorSelectButton.setBackgroundColor(color);
+              }
+            });
+            colorPicker.show();
+          }
+        });
         final String date = eventDateFormat.format(dates.get(position));
         final String month = monthFormat.format(dates.get(position));
         final String year = yearFormat.format(dates.get(position));
         addEvent.setOnClickListener(new OnClickListener() {
           @Override
           public void onClick(View v) {
-            Events newEvent = new Events(eventName.getText().toString(), eventTime.getText().toString(), date, month, year);
+            Events newEvent = new Events(eventName.getText().toString(), eventTime.getText().toString(), date, month, year, String.valueOf(cardViewBackgroundColor));
             userPath.document(userID).collection(CALENDAR_EVENTS).add(newEvent);
             setUpCalendar();
             alertDialog.dismiss();
@@ -195,7 +219,7 @@ public class CustomCalendarView extends LinearLayout {
     mRecyclerView = findViewById(R.id.recyclerView);
     mRecyclerView.setHasFixedSize(true);
     mLayoutManager = new LinearLayoutManager(getContext());
-    mAdapter = new ExampleAdapter(new ArrayList<EventCalendarCardView>());
+    mAdapter = new CalendarEventRecycleViewAdapter(new ArrayList<EventCalendarCardView>());
   }
 
   private void setUpCalendar() {
@@ -277,9 +301,9 @@ public class CustomCalendarView extends LinearLayout {
           }
         }
         for (Events showEventsItem : showEventsList) {
-          exampleList.add(new EventCalendarCardView(showEventsItem.getTIME(), showEventsItem.getEVENT(), showEventsItem.getDATE()));
+          exampleList.add(new EventCalendarCardView(showEventsItem.getTIME(), showEventsItem.getEVENT(), showEventsItem.getDATE(), showEventsItem.getCARDVIEWCOLOR()));
         }
-        mAdapter = new ExampleAdapter(exampleList);
+        mAdapter = new CalendarEventRecycleViewAdapter(exampleList);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
         // CustomCalendarListAdapter ccAdapter = new CustomCalendarListAdapter(getContext(), R.layout.adapter_event_view_layout, showEventsList);

@@ -1,17 +1,26 @@
 package com.example.flannerapp.DatabaseUser;
 
 public class Events {
-  String EVENT, TIME, DATE, MONTH, YEAR;
+  String EVENT, TIME, DATE, MONTH, YEAR, CARDVIEWCOLOR;
 
   public Events() {
   }
 
-  public Events(String EVENT, String TIME, String DATE, String MONTH, String YEAR) {
+  public Events(String EVENT, String TIME, String DATE, String MONTH, String YEAR, String CARDVIEWCOLOR) {
     this.EVENT = EVENT;
     this.TIME = TIME;
     this.DATE = DATE;
     this.MONTH = MONTH;
     this.YEAR = YEAR;
+    this.CARDVIEWCOLOR = CARDVIEWCOLOR;
+  }
+
+  public String getCARDVIEWCOLOR() {
+    return CARDVIEWCOLOR;
+  }
+
+  public void setCARDVIEWCOLOR(String CARDVIEWCOLOR) {
+    this.CARDVIEWCOLOR = CARDVIEWCOLOR;
   }
 
   public String getEVENT() {

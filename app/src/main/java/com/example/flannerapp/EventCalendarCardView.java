@@ -4,11 +4,21 @@ public class EventCalendarCardView {
   private String eventTime;
   private String eventName;
   private String eventDate;
+  private String backgroundCVColor;
 
-  public EventCalendarCardView(String eventTime, String eventName, String eventDate) {
+  public EventCalendarCardView(String eventTime, String eventName, String eventDate, String backgroundCVColor) {
     this.eventTime = eventTime;
     this.eventName = eventName;
     this.eventDate = eventDate;
+    this.backgroundCVColor = backgroundCVColor;
+  }
+
+  public String getBackgroundCVColor() {
+    return backgroundCVColor;
+  }
+
+  public void setBackgroundCVColor(String backgroundCVColor) {
+    this.backgroundCVColor = backgroundCVColor;
   }
 
   public String getEventTime() {
