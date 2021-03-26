@@ -1,4 +1,4 @@
-package com.example.flannerapp;
+package com.example.flannerapp.Adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -6,10 +6,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
+import com.example.flannerapp.EventCalendarCardView;
+import com.example.flannerapp.R;
 import java.util.ArrayList;
 
-public class ExampleAdapter extends RecyclerView.Adapter<ExampleAdapter.ExampleViewHolder> {
+public class CalendarEventRecycleViewAdapter extends RecyclerView.Adapter<CalendarEventRecycleViewAdapter.ExampleViewHolder> {
   private ArrayList<EventCalendarCardView> eventCalendarList;
 
   public static class ExampleViewHolder extends RecyclerView.ViewHolder {
@@ -17,6 +20,7 @@ public class ExampleAdapter extends RecyclerView.Adapter<ExampleAdapter.ExampleV
     public TextView eventTimeTextView;
     public TextView eventNameTextView;
     public TextView eventDateTextView;
+    public CardView cardView;
 
     public ExampleViewHolder(@NonNull View itemView) {
       super(itemView);
@@ -24,10 +28,11 @@ public class ExampleAdapter extends RecyclerView.Adapter<ExampleAdapter.ExampleV
       eventTimeTextView = itemView.findViewById(R.id.events_time_calendar_cardview);
       eventNameTextView = itemView.findViewById(R.id.events_name_calendar_cardview);
       eventDateTextView = itemView.findViewById(R.id.events_date_calendar_cardview);
+      cardView = itemView.findViewById(R.id.calendar_cardview);
     }
   }
 
-  public ExampleAdapter(ArrayList<EventCalendarCardView> eventsList) {
+  public CalendarEventRecycleViewAdapter(ArrayList<EventCalendarCardView> eventsList) {
     eventCalendarList = eventsList;
   }
 
@@ -43,10 +48,11 @@ public class ExampleAdapter extends RecyclerView.Adapter<ExampleAdapter.ExampleV
   public void onBindViewHolder(@NonNull ExampleViewHolder holder, int position) {
     // first item position = 0, second item position = 1, and so on
     EventCalendarCardView currentItem = eventCalendarList.get(position);
+    int backgroundColor = Integer.parseInt(currentItem.getBackgroundCVColor());
     holder.eventTimeTextView.setText(currentItem.getEventTime());
     holder.eventNameTextView.setText(currentItem.getEventName());
     holder.eventDateTextView.setText(currentItem.getEventDate());
-
+    holder.cardView.setCardBackgroundColor(backgroundColor);
   }
 
   @Override
