@@ -3,21 +3,25 @@
     <item
         android:id="@+id/nav_planner"
         android:icon = "@drawable/ic_baseline_calendar_today_24"
-        android:title="Planner" />
+        android:title="Planner"
+        android:color="@color/black"/>
 
     <item
         android:id="@+id/nav_focusTimer"
         android:icon = "@drawable/ic_baseline_timer_24"
-        android:title="Focus Timer" />
+        android:title="Focus Timer"
+        android:color="@color/black"/>
     <item
         android:id="@+id/nav_tracker"
         android:icon = "@drawable/ic_baseline_track_changes_24"
-        android:title="Tracker" />
+        android:title="Tracker"
+        android:color="@color/black"/>
 
     <item
         android:id="@+id/nav_profiles"
         android:icon = "@drawable/ic_baseline_account_circle_24"
-        android:title="Profiles" />
+        android:title="Profiles"
+        android:color="@color/black"/>
 
 
 </menu>

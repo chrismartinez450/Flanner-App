@@ -13,6 +13,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -29,17 +31,27 @@ public class ProfileFragment extends Fragment {
   private DocumentReference docRef;
   private String userID;
 
+  private Button editProfileButton;
+
   @Nullable
   @Override
   public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
     View root = inflater.inflate(R.layout.fragment_profiles, container, false);
     logOutButton = root.findViewById(R.id.btn_signOut_profile);
+    editProfileButton = root.findViewById(R.id.editButton);
 
     logOutButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
         FirebaseAuth.getInstance().signOut();
         startActivity(new Intent(getActivity(), MainActivity.class));
+      }
+    });
+
+    editProfileButton.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        startActivity(new Intent(getActivity(), EditProfile.class));
       }
     });
 
@@ -51,6 +63,7 @@ public class ProfileFragment extends Fragment {
     final TextView fullNameTextView = root.findViewById(R.id.tv_fullName_profile);
     final TextView emailTextView = root.findViewById(R.id.tv_emailAddress_profile);
     final TextView ageTextView = root.findViewById(R.id.tv_age_profile);
+    final TextView usernameTextView = root.findViewById(R.id.tv_username_profile);
 
     docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
       @Override
@@ -59,11 +72,15 @@ public class ProfileFragment extends Fragment {
           String fullName = documentSnapshot.getString("fullName");
           String age = documentSnapshot.getString("age");
           String email = documentSnapshot.getString("email");
+          String username = documentSnapshot.getString("username");
+
           greetingTextView.setTextColor(Color.WHITE);
           fullNameTextView.setTextColor(Color.WHITE);
           emailTextView.setTextColor(Color.WHITE);
           ageTextView.setTextColor(Color.WHITE);
+          usernameTextView.setTextColor(Color.WHITE);
 
+          usernameTextView.setText(username);
           fullNameTextView.setText(fullName);
           emailTextView.setText(email);
           ageTextView.setText(age);
