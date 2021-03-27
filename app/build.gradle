@@ -31,6 +31,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-firestore:21.7.0'
     implementation 'com.google.firebase:firebase-auth:20.0.2'
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+    implementation 'com.google.firebase:firebase-database:19.7.0'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.recyclerview:recyclerview-selection:1.0.0'
     implementation 'androidx.cardview:cardview:1.0.0'
     testImplementation 'junit:junit:4.12'
