@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
@@ -48,6 +49,7 @@ public class CustomCalendarView extends LinearLayout {
 
   public static final String DATE = "date";
   public static final String CALENDAR_EVENTS = "Calendar Events";
+  public static final String TEST = "test";
   private ImageButton nextButton, previousButton;
   private TextView currentDate;
   private GridView gridView;
@@ -70,7 +72,7 @@ public class CustomCalendarView extends LinearLayout {
   private RadioGroup radioGroup;
   private int radioButtonChoice = 1; // =1 for all events, = 2 for upcoming events only
   private RecyclerView mRecyclerView;
-  private RecyclerView.Adapter mAdapter;
+  private CalendarEventRecycleViewAdapter mAdapter;
   private RecyclerView.LayoutManager mLayoutManager;
   private int cardViewBackgroundColor = ContextCompat.getColor(getContext(), R.color.colorPrimary);
 
@@ -280,8 +282,8 @@ public class CustomCalendarView extends LinearLayout {
   }
 
   private void listViewDataTable(final int radioButtonChoice) {
-    final List<Events> showEventsList = new ArrayList();
     final ArrayList<EventCalendarCardView> exampleList = new ArrayList<>();
+    final List<CustomEvents> showEventsList = new ArrayList();
     final Date date = new Date();
     // Adding the data for the list view, nothing to do with the calendar data
     userPath.document(userID).collection(CALENDAR_EVENTS)
@@ -291,23 +293,24 @@ public class CustomCalendarView extends LinearLayout {
       public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
         for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
           Events currentEvent = documentSnapshot.toObject(Events.class);
+          String id = documentSnapshot.getId();
           Date currentDate = ConvertStringToDate(currentEvent.getDATE());
           if (radioButtonChoice == 1) {
-            showEventsList.add(currentEvent);
+            showEventsList.add(new CustomEvents(currentEvent.getEVENT(), currentEvent.getTIME(), currentEvent.getDATE(), currentEvent.getCARDVIEWCOLOR(), id));
           } else { // radioButtonChoice == 2
             if (currentDate.compareTo(date) > 0) {
-              showEventsList.add(currentEvent);
+              showEventsList.add(new CustomEvents(currentEvent.getEVENT(), currentEvent.getTIME(), currentEvent.getDATE(), currentEvent.getCARDVIEWCOLOR(), id));
             }
           }
         }
-        for (Events showEventsItem : showEventsList) {
-          exampleList.add(new EventCalendarCardView(showEventsItem.getTIME(), showEventsItem.getEVENT(), showEventsItem.getDATE(), showEventsItem.getCARDVIEWCOLOR()));
+        for (CustomEvents showEventsItem : showEventsList) {
+          exampleList.add(new EventCalendarCardView(showEventsItem.getTime(),
+            showEventsItem.getEvent(),
+            showEventsItem.getDate(),
+            showEventsItem.getCardViewColor(),
+            showEventsItem.getDocId()));
         }
-        mAdapter = new CalendarEventRecycleViewAdapter(exampleList);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        mRecyclerView.setAdapter(mAdapter);
-        // CustomCalendarListAdapter ccAdapter = new CustomCalendarListAdapter(getContext(), R.layout.adapter_event_view_layout, showEventsList);
-        // lvEvents.setAdapter(ccAdapter);
+        buildRecyclerView(exampleList, showEventsList);
       }
     }).addOnFailureListener(new OnFailureListener() {
       @Override
@@ -315,5 +318,49 @@ public class CustomCalendarView extends LinearLayout {
         Log.d("test", "no data");
       }
     });
+  }
+
+  public void buildRecyclerView(final ArrayList<EventCalendarCardView> exampleList, final List<CustomEvents> showEventsList) {
+    mRecyclerView.setHasFixedSize(true);
+    mAdapter = new CalendarEventRecycleViewAdapter(exampleList);
+    mRecyclerView.setLayoutManager(mLayoutManager);
+    mRecyclerView.setAdapter(mAdapter);
+
+    mAdapter.setOnItemClickListener(new CalendarEventRecycleViewAdapter.OnItemClickListener() {
+      @Override
+      public void onItemClick(int position) {
+
+      }
+      @Override
+      public void onDeleteClick(int position) {
+        removeItem(position, exampleList, showEventsList);
+      }
+    });
+  }
+
+
+  public void removeItem(int position, ArrayList<EventCalendarCardView> exampleList, List<CustomEvents> showEventsList) {
+    EventCalendarCardView removedCardView = exampleList.remove(position);
+    showEventsList.remove(position);
+    try {
+      userPath.document(userID).collection(CALENDAR_EVENTS).document(removedCardView.getDocId())
+        .delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+        @Override
+        public void onSuccess(Void aVoid) {
+          Log.d(TEST, "onSuccess: We have deleted it successfully");
+        }
+      })
+        .addOnFailureListener(new OnFailureListener() {
+          @Override
+          public void onFailure(@NonNull Exception e) {
+            Log.e(TEST, "onFailure: " + e);
+          }
+        });
+    } catch (Exception e) {
+      Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+    }
+    setUpCalendar();
+    mAdapter.notifyItemChanged(position);
+    mAdapter.notifyDataSetChanged();
   }
 }
