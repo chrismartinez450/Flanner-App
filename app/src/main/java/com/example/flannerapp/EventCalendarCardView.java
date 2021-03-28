@@ -5,12 +5,15 @@ public class EventCalendarCardView {
   private String eventName;
   private String eventDate;
   private String backgroundCVColor;
+  private String docId;
 
-  public EventCalendarCardView(String eventTime, String eventName, String eventDate, String backgroundCVColor) {
+
+  public EventCalendarCardView(String eventTime, String eventName, String eventDate, String backgroundCVColor, String docId) {
     this.eventTime = eventTime;
     this.eventName = eventName;
     this.eventDate = eventDate;
     this.backgroundCVColor = backgroundCVColor;
+    this.docId = docId;
   }
 
   public String getBackgroundCVColor() {
@@ -45,4 +48,11 @@ public class EventCalendarCardView {
     this.eventDate = eventDate;
   }
 
+  public String getDocId() {
+    return docId;
+  }
+
+  public void setDocId(String docId) {
+    this.docId = docId;
+  }
 }
