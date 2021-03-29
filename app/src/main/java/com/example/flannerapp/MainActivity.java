@@ -2,6 +2,7 @@ package com.example.flannerapp;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
@@ -12,13 +13,15 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
   private TextView registerTextView, forgotPasswordTextView;
-  private EditText editTextEmail, editTextPassword;
+  private EditText editTextEmail;
+  private TextInputLayout editTextPassword;
   private Button signInButton;
   private FirebaseAuth mAuth;
 
@@ -62,10 +65,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
   private void userLogin() {
     String email = editTextEmail.getText().toString().trim();
-    String password = editTextPassword.getText().toString().trim();
-
-    
-
+    String password = editTextPassword.getEditText().getText().toString().trim();
     if (checkInvalidEmailAndPassword(email, password)) return;
     authenticationFirebase(email, password);
   }
