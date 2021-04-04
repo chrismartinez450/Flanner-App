@@ -28,7 +28,6 @@ import com.example.flannerapp.DatabaseUser.Events;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -42,39 +41,35 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
-
 import yuku.ambilwarna.AmbilWarnaDialog;
 
 public class CustomCalendarView extends LinearLayout {
 
   public static final String DATE = "date";
   public static final String CALENDAR_EVENTS = "Calendar Events";
-  public static final String TEST = "test";
+  public static final String TEST = "test"; // Test instance for log
+  private final SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM yyyy", Locale.ENGLISH);
+  private final SimpleDateFormat monthFormat = new SimpleDateFormat("MMMM", Locale.ENGLISH);
+  private final SimpleDateFormat yearFormat = new SimpleDateFormat("yyyy", Locale.ENGLISH);
+  private final SimpleDateFormat eventDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+  private static final int MAX_CALENDAR_DAYS = 42;
+  private final CollectionReference userPath = FirebaseFirestore.getInstance().collection("Users");
+  private final Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
+  private int radioButtonChoice; // =1 for all events, = 2 for upcoming events only
+  private int cardViewBackgroundColor;
+  private List<Date> dates;
+  private List<Events> eventsList;
   private ImageButton nextButton, previousButton;
   private TextView currentDate;
   private GridView gridView;
-  private static final int MAX_CALENDAR_DAYS = 42;
-  private Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
   private Context context;
-  private SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM yyyy", Locale.ENGLISH);
-  private SimpleDateFormat monthFormat = new SimpleDateFormat("MMMM", Locale.ENGLISH);
-  private SimpleDateFormat yearFormat = new SimpleDateFormat("yyyy", Locale.ENGLISH);
-  private SimpleDateFormat eventDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
   private MyGridAdapter myGridAdapter;
-  // private ListView lvEvents;
   private AlertDialog alertDialog;
-  private List<Date> dates = new ArrayList();
-  private final List<Events> eventsList = new ArrayList();
-  private FirebaseFirestore db = FirebaseFirestore.getInstance();
-  private CollectionReference userPath = db.collection("Users");
-  private FirebaseUser user;
   private String userID;
   private RadioGroup radioGroup;
-  private int radioButtonChoice = 1; // =1 for all events, = 2 for upcoming events only
   private RecyclerView mRecyclerView;
   private CalendarEventRecycleViewAdapter mAdapter;
   private RecyclerView.LayoutManager mLayoutManager;
-  private int cardViewBackgroundColor = ContextCompat.getColor(getContext(), R.color.colorPrimary);
 
   public CustomCalendarView(Context context) {
     super(context);
@@ -104,10 +99,10 @@ public class CustomCalendarView extends LinearLayout {
 
     radioButtonActivity();
 
+    // The implementation of the gridView (calendar + events)
     gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
       @Override
       public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setCancelable(true);
         final View addView = LayoutInflater.from(parent.getContext()).inflate(R.layout.add_newevent_layout, null);
@@ -171,7 +166,28 @@ public class CustomCalendarView extends LinearLayout {
         alertDialog.show();
       }
     });
+  }
 
+  /**
+   * Initialize all of the variables needed
+   */
+  private void initializeLayout() {
+    LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    View view = inflater.inflate(R.layout.calendar_layout, this);
+    nextButton = view.findViewById(R.id.nextBtn);
+    previousButton = view.findViewById(R.id.previousBtn);
+    currentDate = view.findViewById(R.id.current_date);
+    gridView = view.findViewById(R.id.gridView);
+    radioGroup = view.findViewById(R.id.radioButton_calendar);
+    userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+    mRecyclerView = findViewById(R.id.recyclerView);
+    mRecyclerView.setHasFixedSize(true);
+    mLayoutManager = new LinearLayoutManager(getContext());
+    mAdapter = new CalendarEventRecycleViewAdapter(new ArrayList<EventCalendarCardView>());
+    radioButtonChoice = 1; // =1 for all events, = 2 for upcoming events only
+    cardViewBackgroundColor = ContextCompat.getColor(getContext(), R.color.colorPrimary);
+    dates = new ArrayList();
+    eventsList = new ArrayList();
   }
 
   public interface OnTaskedCompleted {
@@ -179,6 +195,9 @@ public class CustomCalendarView extends LinearLayout {
     void onFail();
   }
 
+  /**
+   * This function will get all of the events, and pass into the MyGridAdapter.java to show the events on calendar correctly
+   */
   public void updateEventsListAdapter(final OnTaskedCompleted listener) {
     eventsList.clear();
     listViewDataTable(radioButtonChoice);
@@ -207,23 +226,10 @@ public class CustomCalendarView extends LinearLayout {
     super(context, attrs, defStyleAttr);
   }
 
-  private void initializeLayout() {
-    LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-    View view = inflater.inflate(R.layout.calendar_layout, this);
-    nextButton = view.findViewById(R.id.nextBtn);
-    previousButton = view.findViewById(R.id.previousBtn);
-    currentDate = view.findViewById(R.id.current_date);
-    gridView = view.findViewById(R.id.gridView);
-    // lvEvents = view.findViewById(R.id.lv_events);
-    radioGroup = view.findViewById(R.id.radioButton_calendar);
-    user = FirebaseAuth.getInstance().getCurrentUser();
-    userID = user.getUid();
-    mRecyclerView = findViewById(R.id.recyclerView);
-    mRecyclerView.setHasFixedSize(true);
-    mLayoutManager = new LinearLayoutManager(getContext());
-    mAdapter = new CalendarEventRecycleViewAdapter(new ArrayList<EventCalendarCardView>());
-  }
 
+  /**
+   * This function will reload the calendar with all of the new datas
+   */
   private void setUpCalendar() {
     String currentDate = dateFormat.format(calendar.getTime());
     this.currentDate.setText(currentDate);
@@ -248,7 +254,7 @@ public class CustomCalendarView extends LinearLayout {
     });
   }
 
-  private Date ConvertStringToDate(String eventDate) {
+  public Date ConvertStringToDate(String eventDate) {
     SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
     Date date = null;
     try {
@@ -256,10 +262,13 @@ public class CustomCalendarView extends LinearLayout {
     } catch (ParseException e) {
       e.printStackTrace();
     }
-
     return date;
   }
 
+  /**
+   * radioButtonChoice = 1 -> Show all events
+   * radioButtonChoice = 2 -> Show current events and later
+   */
   public void radioButtonActivity() {
     radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
       @Override
@@ -278,11 +287,13 @@ public class CustomCalendarView extends LinearLayout {
         }
       }
     });
-
   }
 
+  /**
+   * This function will display the events list by using cardView
+   */
   private void listViewDataTable(final int radioButtonChoice) {
-    final ArrayList<EventCalendarCardView> exampleList = new ArrayList<>();
+    final ArrayList<EventCalendarCardView> allEventsList = new ArrayList<>();
     final List<CustomEvents> showEventsList = new ArrayList();
     final Date date = new Date();
     // Adding the data for the list view, nothing to do with the calendar data
@@ -304,13 +315,13 @@ public class CustomCalendarView extends LinearLayout {
           }
         }
         for (CustomEvents showEventsItem : showEventsList) {
-          exampleList.add(new EventCalendarCardView(showEventsItem.getTime(),
+          allEventsList.add(new EventCalendarCardView(showEventsItem.getTime(),
             showEventsItem.getEvent(),
             showEventsItem.getDate(),
             showEventsItem.getCardViewColor(),
             showEventsItem.getDocId()));
         }
-        buildRecyclerView(exampleList, showEventsList);
+        buildRecyclerView(allEventsList, showEventsList);
       }
     }).addOnFailureListener(new OnFailureListener() {
       @Override
@@ -320,9 +331,14 @@ public class CustomCalendarView extends LinearLayout {
     });
   }
 
-  public void buildRecyclerView(final ArrayList<EventCalendarCardView> exampleList, final List<CustomEvents> showEventsList) {
+  /**
+   * This function will build the recycler view
+   * @param allEventsList : All of the events
+   * @param showEventsList: Only the events that will show on calendar. Just in case the user select on showing only current events
+   */
+  private void buildRecyclerView(final ArrayList<EventCalendarCardView> allEventsList, final List<CustomEvents> showEventsList) {
     mRecyclerView.setHasFixedSize(true);
-    mAdapter = new CalendarEventRecycleViewAdapter(exampleList);
+    mAdapter = new CalendarEventRecycleViewAdapter(allEventsList);
     mRecyclerView.setLayoutManager(mLayoutManager);
     mRecyclerView.setAdapter(mAdapter);
 
@@ -333,14 +349,19 @@ public class CustomCalendarView extends LinearLayout {
       }
       @Override
       public void onDeleteClick(int position) {
-        removeItem(position, exampleList, showEventsList);
+        removeItem(position, allEventsList, showEventsList);
       }
     });
   }
 
-
-  public void removeItem(int position, ArrayList<EventCalendarCardView> exampleList, List<CustomEvents> showEventsList) {
-    EventCalendarCardView removedCardView = exampleList.remove(position);
+  /**
+   * This function will handle the remove icon on event cardView
+   * @param position: Position on events arraylist
+   * @param allEventsList: All of the events
+   * @param showEventsList: Only the events that will show on calendar. Just in case the user select on showing only current events
+   */
+  private void removeItem(int position, ArrayList<EventCalendarCardView> allEventsList, List<CustomEvents> showEventsList) {
+    EventCalendarCardView removedCardView = allEventsList.remove(position);
     showEventsList.remove(position);
     try {
       userPath.document(userID).collection(CALENDAR_EVENTS).document(removedCardView.getDocId())
