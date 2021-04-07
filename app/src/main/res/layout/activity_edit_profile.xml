@@ -17,7 +17,8 @@
             android:text="Edit Profile"
             android:textColor="@color/white"
             android:textSize="30sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:layout_centerHorizontal="true"/>
 
         <EditText
             android:id="@+id/username_edit"
@@ -64,7 +65,8 @@
             android:text="Change Email"
             android:textColor="@color/white"
             android:textSize="30sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:layout_centerHorizontal="true"/>
 
         <EditText
             android:id="@+id/email_edit"

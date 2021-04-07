@@ -1,5 +1,7 @@
 package com.example.flannerapp;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -16,8 +18,10 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -32,6 +36,7 @@ public class ProfileFragment extends Fragment {
   private String userID;
 
   private Button editProfileButton;
+  private Button deleteProfileButton;
 
   @Nullable
   @Override
@@ -39,6 +44,7 @@ public class ProfileFragment extends Fragment {
     View root = inflater.inflate(R.layout.fragment_profiles, container, false);
     logOutButton = root.findViewById(R.id.btn_signOut_profile);
     editProfileButton = root.findViewById(R.id.editButton);
+    deleteProfileButton = root.findViewById(R.id.deleteProfileButton);
 
     logOutButton.setOnClickListener(new View.OnClickListener() {
       @Override
@@ -52,6 +58,41 @@ public class ProfileFragment extends Fragment {
       @Override
       public void onClick(View v) {
         startActivity(new Intent(getActivity(), EditProfile.class));
+      }
+    });
+
+    //deletes account on firebase
+    deleteProfileButton.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+        dialog.setTitle("Are you sure?");
+        dialog.setMessage("Deleting your account will remove all your information, and you will no longer be able to login to the app with this account. Do you wish to continue?");
+        dialog.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+          @Override
+          public void onClick(DialogInterface dialog, int which) {
+            user.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+              @Override
+              public void onComplete(@NonNull Task<Void> task) {
+                if(task.isSuccessful()){
+                  Toast.makeText(getActivity(), "Account has been deleted.", Toast.LENGTH_LONG).show();
+                  FirebaseAuth.getInstance().signOut();
+                  startActivity(new Intent(getActivity(), MainActivity.class));
+                }else{
+                  Toast.makeText(getActivity(), task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                }
+              }
+            });
+          }
+        });
+        dialog.setNegativeButton("Dismiss", new DialogInterface.OnClickListener() {
+          @Override
+          public void onClick(DialogInterface dialog, int which) {
+            dialog.dismiss();
+          }
+        });
+        AlertDialog alertDialog = dialog.create();
+        alertDialog.show();
       }
     });
 
