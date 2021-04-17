@@ -14,6 +14,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -21,7 +22,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 public class RegisterUser extends AppCompatActivity implements View.OnClickListener {
   private TextView banner, registerUserButton;
-  private EditText editTextFullName, editTextAge, editTextEmail, editTextPassword, editTextUsername, editTextConfirmPassword;
+  private EditText editTextFullName, editTextAge, editTextEmail, editTextUsername;
+  private TextInputLayout editTextPassword, editTextConfirmPassword;
   private FirebaseAuth mAuth;
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -65,8 +67,8 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
     final String age = editTextAge.getText().toString().trim();
     final String fullName = editTextFullName.getText().toString().trim();
     final String username = editTextUsername.getText().toString().trim();
-    String password = editTextPassword.getText().toString().trim();
-    String confirmPassword = editTextConfirmPassword.getText().toString().trim();
+    String password = editTextPassword.getEditText().getText().toString().trim();
+    String confirmPassword = editTextConfirmPassword.getEditText().getText().toString().trim();
     if (!checkUsernameSpace(username) | !checkUsernameLength(username)
       | !checkEmptyFullName(fullName) | !checkEmptyAge(age)
       | !checkEmailPatterns(email) | !checkBothPasswordsEmpty(confirmPassword, password)
