@@ -7,7 +7,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -27,7 +26,7 @@ import com.google.firebase.firestore.Transaction;
 
 public class EditProfile extends AppCompatActivity {
     private static final String TAG = "TAG";
-    private Button saveEditButton, changeEmailButton;
+    private Button saveEditButton, changeEmailButton, returnButton;
     EditText editUsername, editEmail, editName, editAge;
     private String userID;
     FirebaseFirestore db;
@@ -35,21 +34,15 @@ public class EditProfile extends AppCompatActivity {
     FirebaseUser user;
     DocumentReference docRef;
 
-    //for returning to ProfileFragment
-   private Fragment fragment = null;
-   private FragmentManager fm;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
 
-        fm = getSupportFragmentManager();
-        final FragmentTransaction ft = fm.beginTransaction();
-        fragment = new ProfileFragment();
 
         saveEditButton = findViewById(R.id.save_button);
         changeEmailButton = findViewById(R.id.change_email_button);
+        returnButton = findViewById(R.id.return_button);
         user = FirebaseAuth.getInstance().getCurrentUser();
         userID = user.getUid();
 
@@ -90,8 +83,7 @@ public class EditProfile extends AppCompatActivity {
                     return;
                 }
                 updateProfile();
-                ft.add(R.id.edit_profile_activity, fragment).commit();
-                finish();
+                returnToProfile();
             }
         });
 
@@ -103,8 +95,15 @@ public class EditProfile extends AppCompatActivity {
                     return;
                 }
                 updateEmail();
-                ft.add(R.id.edit_profile_activity, fragment).commit();
-                finish();
+                returnToProfile();
+
+            }
+        });
+
+        returnButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                returnToProfile();
             }
         });
     }
@@ -167,6 +166,20 @@ public class EditProfile extends AppCompatActivity {
                         Toast.makeText(EditProfile.this, "Unable to update", Toast.LENGTH_SHORT).show();
                     }
                 });
+    }
+
+    private void returnToProfile(){
+        //for returning to ProfileFragment
+        Fragment fragment = null;
+        FragmentManager fm;
+        fm = getSupportFragmentManager();
+        final FragmentTransaction ft = fm.beginTransaction();
+        fragment = new ProfileFragment();
+
+        ft.replace(R.id.edit_profile_activity, fragment);
+        ft.addToBackStack(null);
+        ft.commit();
+        finish();
     }
 
 
