@@ -33,6 +33,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -384,4 +385,5 @@ public class CustomCalendarView extends LinearLayout {
     mAdapter.notifyItemChanged(position);
     mAdapter.notifyDataSetChanged();
   }
+
 }

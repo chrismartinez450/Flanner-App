@@ -4,9 +4,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,7 +17,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -34,11 +35,18 @@ public class EditProfile extends AppCompatActivity {
     FirebaseUser user;
     DocumentReference docRef;
 
+    //for returning to ProfileFragment
+   private Fragment fragment = null;
+   private FragmentManager fm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
+
+        fm = getSupportFragmentManager();
+        final FragmentTransaction ft = fm.beginTransaction();
+        fragment = new ProfileFragment();
 
         saveEditButton = findViewById(R.id.save_button);
         changeEmailButton = findViewById(R.id.change_email_button);
@@ -82,6 +90,8 @@ public class EditProfile extends AppCompatActivity {
                     return;
                 }
                 updateProfile();
+                ft.add(R.id.edit_profile_activity, fragment).commit();
+                finish();
             }
         });
 
@@ -93,6 +103,8 @@ public class EditProfile extends AppCompatActivity {
                     return;
                 }
                 updateEmail();
+                ft.add(R.id.edit_profile_activity, fragment).commit();
+                finish();
             }
         });
     }
@@ -156,5 +168,6 @@ public class EditProfile extends AppCompatActivity {
                     }
                 });
     }
+
 
 }

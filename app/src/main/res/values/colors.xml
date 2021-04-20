@@ -13,7 +13,7 @@
     <color name="background_color">#3B3A4E</color>
     <color name="white">#FFFFFF</color>
     <color name="yellow">#F4D175</color>
-    <color name="orange">#FFC64D</color>
+    <color name="orange">#FFC800</color>
     <color name="black">#000000</color>
     <color name="baby_blue">#AFE2FF</color>
 </resources>
