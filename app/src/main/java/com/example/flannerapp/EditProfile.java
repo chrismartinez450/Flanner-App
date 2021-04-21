@@ -39,7 +39,6 @@ public class EditProfile extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
 
-
         saveEditButton = findViewById(R.id.save_button);
         changeEmailButton = findViewById(R.id.change_email_button);
         returnButton = findViewById(R.id.return_button);
@@ -96,10 +95,8 @@ public class EditProfile extends AppCompatActivity {
                 }
                 updateEmail();
                 returnToProfile();
-
             }
         });
-
         returnButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -181,6 +178,4 @@ public class EditProfile extends AppCompatActivity {
         ft.commit();
         finish();
     }
-
-
 }
