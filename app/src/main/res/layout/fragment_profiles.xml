@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     android:textColor="#ffffff"
     android:background="#3B3A4E"
-    tools:context=".ProfileFragment">
+    tools:context=".ProfileFragment"
+    android:id="@+id/profile_fragment">
 
     <TextView
         android:id="@+id/greeting"

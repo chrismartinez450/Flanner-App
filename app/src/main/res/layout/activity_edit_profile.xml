@@ -5,11 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background_color"
-    tools:context=".EditProfile">
+    tools:context=".EditProfile"
+    android:id="@+id/edit_profile_activity">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/profile_layout">
+
         <TextView
             android:id="@+id/edit_profile_title"
             android:layout_width="wrap_content"
@@ -18,13 +20,15 @@
             android:textColor="@color/white"
             android:textSize="30sp"
             android:textStyle="bold"
-            android:layout_centerHorizontal="true"/>
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="80sp"/>
 
         <EditText
             android:id="@+id/username_edit"
             android:layout_width="289dp"
             android:layout_height="56dp"
             android:layout_below="@id/edit_profile_title"
+            android:layout_centerHorizontal="true"
             android:hint="Username"
             android:textColorHint="#ffffff"
             android:textColor="@color/white"
@@ -35,6 +39,7 @@
             android:layout_width="289dp"
             android:layout_height="56dp"
             android:layout_below="@id/username_edit"
+            android:layout_centerHorizontal="true"
             android:hint="Full Name"
             android:textColor="@color/white"
             android:textColorHint="#ffffff"
@@ -44,7 +49,9 @@
             android:layout_width="289dp"
             android:layout_height="56dp"
             android:layout_below="@id/fullname_edit"
+            android:layout_centerHorizontal="true"
             android:hint="Age"
+            android:inputType="number"
             android:textColor="@color/white"
             android:textColorHint="#ffffff"
             android:textSize="20sp"/>
@@ -55,7 +62,8 @@
             android:layout_below="@id/age_edit"
             android:backgroundTint="#535277"
             android:text="Save"
-            android:textColor="#ffffff"/>
+            android:textColor="#ffffff"
+            android:layout_marginLeft="60dp"/>
 
         <TextView
             android:id="@+id/edit_email_title"
@@ -66,27 +74,42 @@
             android:textColor="@color/white"
             android:textSize="30sp"
             android:textStyle="bold"
-            android:layout_centerHorizontal="true"/>
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="40sp"/>
 
         <EditText
             android:id="@+id/email_edit"
-            android:layout_width="289dp"
+            android:layout_width="350dp"
             android:layout_height="56dp"
             android:layout_below="@id/edit_email_title"
+            android:layout_centerHorizontal="true"
             android:hint="Email"
             android:textColor="@color/white"
             android:textColorHint="#ffffff"
             android:textSize="20sp"/>
+
         <Button
             android:id="@+id/change_email_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/email_edit"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="0dp"
             android:backgroundTint="#535277"
             android:text="Change Email"
-            android:textColor="@color/white"/>
+            android:textColor="@color/white" />
 
+        <Button
+            android:id="@+id/return_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/change_email_button"
+            android:backgroundTint="#535277"
+            android:layout_centerHorizontal="true"
+            android:text="Return"
+            android:textColor="@color/white"
+            android:layout_marginLeft="60dp"
+            android:layout_marginTop="40sp"/>
     </RelativeLayout>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

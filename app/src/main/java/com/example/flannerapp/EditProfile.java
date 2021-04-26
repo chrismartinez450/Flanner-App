@@ -4,9 +4,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,7 +16,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -26,14 +26,13 @@ import com.google.firebase.firestore.Transaction;
 
 public class EditProfile extends AppCompatActivity {
     private static final String TAG = "TAG";
-    private Button saveEditButton, changeEmailButton;
+    private Button saveEditButton, changeEmailButton, returnButton;
     EditText editUsername, editEmail, editName, editAge;
     private String userID;
     FirebaseFirestore db;
     FirebaseAuth auth;
     FirebaseUser user;
     DocumentReference docRef;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +41,7 @@ public class EditProfile extends AppCompatActivity {
 
         saveEditButton = findViewById(R.id.save_button);
         changeEmailButton = findViewById(R.id.change_email_button);
+        returnButton = findViewById(R.id.return_button);
         user = FirebaseAuth.getInstance().getCurrentUser();
         userID = user.getUid();
 
@@ -82,6 +82,7 @@ public class EditProfile extends AppCompatActivity {
                     return;
                 }
                 updateProfile();
+                returnToProfile();
             }
         });
 
@@ -93,6 +94,13 @@ public class EditProfile extends AppCompatActivity {
                     return;
                 }
                 updateEmail();
+                returnToProfile();
+            }
+        });
+        returnButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                returnToProfile();
             }
         });
     }
@@ -157,4 +165,17 @@ public class EditProfile extends AppCompatActivity {
                 });
     }
 
+    private void returnToProfile(){
+        //for returning to ProfileFragment
+        Fragment fragment = null;
+        FragmentManager fm;
+        fm = getSupportFragmentManager();
+        final FragmentTransaction ft = fm.beginTransaction();
+        fragment = new ProfileFragment();
+
+        ft.replace(R.id.edit_profile_activity, fragment);
+        ft.addToBackStack(null);
+        ft.commit();
+        finish();
+    }
 }
