@@ -33,6 +33,7 @@ public class EditProfile extends AppCompatActivity {
     FirebaseAuth auth;
     FirebaseUser user;
     DocumentReference docRef;
+    Bundle bundle = new Bundle();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -154,13 +155,13 @@ public class EditProfile extends AppCompatActivity {
         }).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-                Toast.makeText(EditProfile.this, "Profile has been updated", Toast.LENGTH_SHORT).show();
+                Toast.makeText(EditProfile.this, "Profile has been updated. Please refresh to see changes.", Toast.LENGTH_SHORT).show();
             }
         })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(EditProfile.this, "Unable to update", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(EditProfile.this, "Unable to update.", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
@@ -172,10 +173,11 @@ public class EditProfile extends AppCompatActivity {
         fm = getSupportFragmentManager();
         final FragmentTransaction ft = fm.beginTransaction();
         fragment = new ProfileFragment();
+        fragment.setArguments(bundle);
 
-        ft.replace(R.id.edit_profile_activity, fragment);
+        ft.replace(R.id.profile_fragment, fragment);
+        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         ft.addToBackStack(null);
-        ft.commit();
         finish();
     }
 }

@@ -24,7 +24,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 
 public class ProfileFragment extends Fragment {
   private Button logOutButton;
@@ -35,6 +37,11 @@ public class ProfileFragment extends Fragment {
 
   private Button editProfileButton;
   private Button deleteProfileButton;
+  private TextView greetingTextView;
+  private TextView fullNameTextView;
+  private TextView emailTextView;
+  private TextView ageTextView;
+  private TextView usernameTextView;
 
   @Nullable
   @Override
@@ -98,11 +105,11 @@ public class ProfileFragment extends Fragment {
     userID = user.getUid();
     docRef = FirebaseFirestore.getInstance().collection("Users").document(userID);
 
-    final TextView greetingTextView = root.findViewById(R.id.greeting);
-    final TextView fullNameTextView = root.findViewById(R.id.tv_fullName_profile);
-    final TextView emailTextView = root.findViewById(R.id.tv_emailAddress_profile);
-    final TextView ageTextView = root.findViewById(R.id.tv_age_profile);
-    final TextView usernameTextView = root.findViewById(R.id.tv_username_profile);
+    greetingTextView = root.findViewById(R.id.greeting);
+    fullNameTextView = root.findViewById(R.id.tv_fullName_profile);
+    emailTextView = root.findViewById(R.id.tv_emailAddress_profile);
+    ageTextView = root.findViewById(R.id.tv_age_profile);
+    usernameTextView = root.findViewById(R.id.tv_username_profile);
 
     docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
       @Override
@@ -139,4 +146,34 @@ public class ProfileFragment extends Fragment {
     return root;
   }
 
+  //updates fragment data in real time
+  @Override
+  public void onStart() {
+    super.onStart();
+    user = FirebaseAuth.getInstance().getCurrentUser();
+    userID = user.getUid();
+    docRef = FirebaseFirestore.getInstance().collection("Users").document(userID);
+
+    docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+      @Override
+      public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+          if(error != null){
+            Toast.makeText(getActivity(), "Error while loading", Toast.LENGTH_LONG).show();
+            return;
+          }
+          if(value.exists()){
+            String fullName = value.getString("fullName");
+            String age = value.getString("age");
+            String email = value.getString("email");
+            String username = value.getString("username");
+
+            usernameTextView.setText(username);
+            fullNameTextView.setText(fullName);
+            emailTextView.setText(email);
+            ageTextView.setText(age);
+            greetingTextView.setText("Hello " + fullName);
+          }
+      }
+    });
+  }//end onStart
 }
