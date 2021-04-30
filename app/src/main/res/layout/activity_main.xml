@@ -115,4 +115,13 @@
         android:layout_marginLeft="50dp"
         android:layout_marginTop="50dp"/>
 
+    <com.facebook.login.widget.LoginButton
+        android:id="@+id/facebook_sign_in"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/tv_register_main"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginRight="25dp"
+        android:layout_marginTop="60dp" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
