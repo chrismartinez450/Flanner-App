@@ -10,7 +10,6 @@ public class User {
     this.fullName = fullName;
     this.age = age;
     this.email = email;
-
   }
 
   public String getFullName() {

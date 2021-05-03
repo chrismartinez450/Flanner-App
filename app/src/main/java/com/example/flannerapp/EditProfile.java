@@ -27,7 +27,7 @@ import com.google.firebase.firestore.Transaction;
 public class EditProfile extends AppCompatActivity {
     private static final String TAG = "TAG";
     private Button saveEditButton, changeEmailButton, returnButton;
-    EditText editUsername, editEmail, editName, editAge;
+    EditText editEmail, editName, editAge;
     private String userID;
     FirebaseFirestore db;
     FirebaseAuth auth;
@@ -49,7 +49,6 @@ public class EditProfile extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();
 
-        editUsername = findViewById(R.id.username_edit);
         editEmail = findViewById(R.id.email_edit);
         editName = findViewById(R.id.fullname_edit);
         editAge = findViewById(R.id.age_edit);
@@ -59,13 +58,11 @@ public class EditProfile extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if(task.getResult().exists()){
-                    String username = task.getResult().getString("username");
                     String email = task.getResult().getString("email");
                     String fullName = task.getResult().getString("fullName");
                     String age = task.getResult().getString("age");
 
                     //fills in info from firestore
-                    editUsername.setText(username);
                     editEmail.setText(email);
                     editName.setText(fullName);
                     editAge.setText(age);
@@ -78,7 +75,7 @@ public class EditProfile extends AppCompatActivity {
         saveEditButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(editUsername.getText().toString().isEmpty() || editName.getText().toString().isEmpty() || editAge.getText().toString().isEmpty()){
+                if(editName.getText().toString().isEmpty() || editAge.getText().toString().isEmpty()){
                     Toast.makeText(EditProfile.this, "One or more fields is empty", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -137,7 +134,6 @@ public class EditProfile extends AppCompatActivity {
     }
 
     private void updateProfile() {
-        final String newUsername = editUsername.getText().toString();
         final String newName = editName.getText().toString();
         final String newAge = editAge.getText().toString();
 
@@ -147,7 +143,6 @@ public class EditProfile extends AppCompatActivity {
             @Override
             public Void apply(Transaction transaction) throws FirebaseFirestoreException {
 
-                transaction.update(sDoc, "username", newUsername);
                 transaction.update(sDoc, "fullName", newName);
                 transaction.update(sDoc, "age", newAge);
                 return null;

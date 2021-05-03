@@ -24,26 +24,16 @@
             android:layout_marginTop="80sp"/>
 
         <EditText
-            android:id="@+id/username_edit"
-            android:layout_width="289dp"
-            android:layout_height="56dp"
-            android:layout_below="@id/edit_profile_title"
-            android:layout_centerHorizontal="true"
-            android:hint="Username"
-            android:textColorHint="#ffffff"
-            android:textColor="@color/white"
-            android:textSize="20sp"/>
-
-        <EditText
             android:id="@+id/fullname_edit"
             android:layout_width="289dp"
             android:layout_height="56dp"
-            android:layout_below="@id/username_edit"
+            android:layout_below="@id/edit_profile_title"
             android:layout_centerHorizontal="true"
             android:hint="Full Name"
             android:textColor="@color/white"
             android:textColorHint="#ffffff"
             android:textSize="20sp"/>
+
         <EditText
             android:id="@+id/age_edit"
             android:layout_width="289dp"
@@ -55,6 +45,7 @@
             android:textColor="@color/white"
             android:textColorHint="#ffffff"
             android:textSize="20sp"/>
+
         <Button
             android:id="@+id/save_button"
             android:layout_width="wrap_content"
