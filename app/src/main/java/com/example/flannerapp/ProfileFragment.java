@@ -41,7 +41,6 @@ public class ProfileFragment extends Fragment {
   private TextView fullNameTextView;
   private TextView emailTextView;
   private TextView ageTextView;
-  private TextView usernameTextView;
 
   @Nullable
   @Override
@@ -109,7 +108,6 @@ public class ProfileFragment extends Fragment {
     fullNameTextView = root.findViewById(R.id.tv_fullName_profile);
     emailTextView = root.findViewById(R.id.tv_emailAddress_profile);
     ageTextView = root.findViewById(R.id.tv_age_profile);
-    usernameTextView = root.findViewById(R.id.tv_username_profile);
 
     docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
       @Override
@@ -118,15 +116,12 @@ public class ProfileFragment extends Fragment {
           String fullName = documentSnapshot.getString("fullName");
           String age = documentSnapshot.getString("age");
           String email = documentSnapshot.getString("email");
-          String username = documentSnapshot.getString("username");
 
           greetingTextView.setTextColor(Color.WHITE);
           fullNameTextView.setTextColor(Color.WHITE);
           emailTextView.setTextColor(Color.WHITE);
           ageTextView.setTextColor(Color.WHITE);
-          usernameTextView.setTextColor(Color.WHITE);
 
-          usernameTextView.setText(username);
           fullNameTextView.setText(fullName);
           emailTextView.setText(email);
           ageTextView.setText(age);
@@ -167,7 +162,6 @@ public class ProfileFragment extends Fragment {
             String email = value.getString("email");
             String username = value.getString("username");
 
-            usernameTextView.setText(username);
             fullNameTextView.setText(fullName);
             emailTextView.setText(email);
             ageTextView.setText(age);
