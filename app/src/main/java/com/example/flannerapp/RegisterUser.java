@@ -22,7 +22,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 public class RegisterUser extends AppCompatActivity implements View.OnClickListener {
   private TextView banner, registerUserButton;
-  private EditText editTextFullName, editTextAge, editTextEmail, editTextUsername;
+  private EditText editTextFullName, editTextAge, editTextEmail;
   private TextInputLayout editTextPassword, editTextConfirmPassword;
   private FirebaseAuth mAuth;
   @Override
@@ -53,7 +53,6 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
     editTextAge = findViewById(R.id.et_age_register);
     editTextEmail = findViewById(R.id.et_email_register);
     editTextPassword = findViewById(R.id.et_password_register);
-    editTextUsername = findViewById(R.id.et_username_register);
     editTextConfirmPassword = findViewById(R.id.et_confirmPassword_register);
   }
 
@@ -66,26 +65,24 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
     final String email = editTextEmail.getText().toString().trim();
     final String age = editTextAge.getText().toString().trim();
     final String fullName = editTextFullName.getText().toString().trim();
-    final String username = editTextUsername.getText().toString().trim();
     String password = editTextPassword.getEditText().getText().toString().trim();
     String confirmPassword = editTextConfirmPassword.getEditText().getText().toString().trim();
-    if (!checkUsernameSpace(username) | !checkUsernameLength(username)
-      | !checkEmptyFullName(fullName) | !checkEmptyAge(age)
+    if (!checkEmptyFullName(fullName) | !checkEmptyAge(age)
       | !checkEmailPatterns(email) | !checkBothPasswordsEmpty(confirmPassword, password)
       | !checkPasswordLength(password) | !checkIfEmpty(confirmPassword)
       | !checkMatching(confirmPassword, password)) {
       return;
     }
-    createUserInFirebase(email, age, fullName, password, username);
+    createUserInFirebase(email, age, fullName, password);
   }
 
-  private void createUserInFirebase(final String email, final String age, final String fullName, String password, final String username) {
+  private void createUserInFirebase(final String email, final String age, final String fullName, String password) {
     mAuth.createUserWithEmailAndPassword(email, password)
       .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
         @Override
         public void onComplete(@NonNull Task<AuthResult> task) {
           if (task.isSuccessful()) {
-            User user = new User(fullName, age, email, username);
+            User user = new User(fullName, age, email);
             FirebaseFirestore.getInstance().collection("Users").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
               .set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
               @Override
@@ -112,25 +109,6 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
     assert user != null;
     user.sendEmailVerification();
     Toast.makeText(RegisterUser.this, "Check your email to verify your account!", Toast.LENGTH_LONG).show();
-  }
-
-  private boolean checkUsernameSpace(String username){
-    if (username.contains(" ")) {
-      editTextUsername.setError("Username cannot have spaces!");
-      editTextUsername.requestFocus();
-      return false;
-    }
-    return true;
-  }
-
-  private boolean checkUsernameLength(String username) {
-    if(username.length() < 6)
-    {
-      editTextUsername.setError("Username must be at least 6 characters long!");
-      editTextUsername.requestFocus();
-      return false;
-    }
-    return true;
   }
   private boolean checkPasswordLength(String password) {
     if(password.length() < 6) {

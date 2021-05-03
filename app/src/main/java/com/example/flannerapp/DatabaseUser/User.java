@@ -1,16 +1,16 @@
 package com.example.flannerapp.DatabaseUser;
 
 public class User {
-  public String fullName, age, email, username;
+  public String fullName, age, email;
 
   public User() {
   }
 
-  public User(String fullName, String age, String email, String username) {
+  public User(String fullName, String age, String email) {
     this.fullName = fullName;
     this.age = age;
     this.email = email;
-    this.username = username;
+
   }
 
   public String getFullName() {
@@ -37,11 +37,4 @@ public class User {
     this.email = email;
   }
 
-  public String getUsername() {
-    return username;
-  }
-
-  public void setUsername(String username) {
-    this.username = username;
-  }
 }
