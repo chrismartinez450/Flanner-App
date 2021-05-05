@@ -12,6 +12,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.flannerapp.DatabaseUser.User;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -26,6 +27,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
   private TextView registerTextView, forgotPasswordTextView;
@@ -133,6 +135,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                   // Sign in success, update UI with the signed-in user's information
                   Log.d(TAG, "signInWithCredential:success");
                   FirebaseUser user = mAuth.getCurrentUser();
+                  User newUser = new User(user.getDisplayName(), "0", user.getEmail());
+                  FirebaseFirestore.getInstance().collection("Users").document(user.getUid()).set(newUser);
+                  startActivity(new Intent(MainActivity.this, HomeScreenActivity.class));
                   startActivity(new Intent(MainActivity.this, HomeScreenActivity.class));
                 } else {
                   // If sign in fails, display a message to the user.
