@@ -210,7 +210,7 @@ public class CustomCalendarView extends LinearLayout {
     Intent intent = new Intent(context.getApplicationContext(), AlarmReceiver.class);
     intent.putExtra("event", event);
     intent.putExtra("time", time);
-    PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_ONE_SHOT);
+    PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     AlarmManager alarmManager = (AlarmManager)context.getApplicationContext().getSystemService(Context.ALARM_SERVICE);
     alarmManager.set(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(), pendingIntent);
   }
@@ -401,6 +401,7 @@ public class CustomCalendarView extends LinearLayout {
         @Override
         public void onSuccess(Void aVoid) {
           Log.d(TEST, "onSuccess: We have deleted it successfully");
+          cancelAlarm();
         }
       })
         .addOnFailureListener(new OnFailureListener() {

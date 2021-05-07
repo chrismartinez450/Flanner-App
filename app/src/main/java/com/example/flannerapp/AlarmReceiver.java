@@ -21,7 +21,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         String time = intent.getStringExtra("time");
         int notId = intent.getIntExtra("id", 0);
         Intent activityIntent = new Intent(context, MainActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, activityIntent, PendingIntent.FLAG_ONE_SHOT);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, activityIntent, 0);
 
         String channelId = "channelId";
         CharSequence name = "channel_name";
@@ -38,7 +38,8 @@ public class AlarmReceiver extends BroadcastReceiver {
                 .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
                 .setContentTitle(event)
                 .setContentText(time)
-                .setDeleteIntent(pendingIntent)
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true)
                 .setGroup("Group_calendar_view")
                 .build();
         NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(context);
