@@ -10,13 +10,13 @@
     <color name="login_form_details_light">#1affffff</color>
     <color name="login_form_details_medium">#66ffffff</color>
     <color name="green">@android:color/holo_green_dark</color>
-    <color name="background_color">#3B3A4E</color>
+    <color name="background_color">#252431</color>
     <color name="white">#FFFFFF</color>
     <color name="yellow">#F4D175</color>
     <color name="orange">#FFC800</color>
     <color name="black">#000000</color>
-    <color name="navigation_color">#AFE2FF</color>
-    <color name="calendar_bg">#CCCCCC</color>
+    <color name="navigation_color">#7181B9</color>
+    <color name="calendar_bg">#827e7e</color>
     <color name="btn_color">#535277</color>
-    <color name="mode_color">#252431</color>
+    <color name="mode_color">#3B3A4E</color>
 </resources>

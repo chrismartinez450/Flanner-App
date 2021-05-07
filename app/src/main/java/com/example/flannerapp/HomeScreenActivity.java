@@ -41,7 +41,6 @@ public class HomeScreenActivity extends AppCompatActivity {
         return true;
       }
     });
-
     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new PlannerFragment()).commit();
   }
 }

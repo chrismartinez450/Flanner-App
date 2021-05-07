@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:textColor="#ffffff"
-    android:background="#3B3A4E"
+    android:background="@color/background_color"
     tools:context=".ProfileFragment"
     android:id="@+id/profile_fragment">
 
@@ -14,7 +14,7 @@
         android:layout_width="231dp"
         android:layout_height="43dp"
         android:gravity="center"
-        android:textSize="20sp"
+        android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
@@ -44,7 +44,7 @@
         app:layout_constraintHorizontal_bias="0.216"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.301" />
+        app:layout_constraintVertical_bias="0.201" />
 
     <TextView
         android:id="@+id/emailAddressTitle"
@@ -60,7 +60,7 @@
         app:layout_constraintHorizontal_bias="0.248"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.397" />
+        app:layout_constraintVertical_bias="0.301" />
 
     <TextView
         android:id="@+id/tv_ageTitle_profile"
@@ -74,7 +74,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.184"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.401"/>
 
 
     <TextView
@@ -114,23 +115,23 @@
         android:id="@+id/editButton"
         android:layout_width="104dp"
         android:layout_height="48dp"
-        android:backgroundTint="#535277"
+        android:backgroundTint="@color/btn_color"
         android:text="Edit"
         android:textColor="#ffff"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.472"
+        app:layout_constraintHorizontal_bias="0.469"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.667" />
+        app:layout_constraintVertical_bias="0.601" />
 
     <Button
         android:id="@+id/deleteProfileButton"
         android:layout_width="104dp"
         android:layout_height="48dp"
-        android:backgroundTint="#535277"
+        android:backgroundTint="@color/btn_color"
         android:text="Delete"
         android:textColor="#ffff"
         android:textSize="20sp"
@@ -140,22 +141,37 @@
         app:layout_constraintHorizontal_bias="0.472"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.755" />
+        app:layout_constraintVertical_bias="0.681" />
 
     <Button
         android:id="@+id/btn_signOut_profile"
         android:layout_width="105dp"
         android:layout_height="47dp"
-        android:backgroundTint="#535277"
+        android:backgroundTint="@color/btn_color"
         android:text="Logout"
         android:textColor="#ffff"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.47"
+        app:layout_constraintHorizontal_bias="0.472"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.845" />
+        app:layout_constraintVertical_bias="0.761" />
+
+    <Button
+        android:id="@+id/switch_mode"
+        android:layout_width="wrap_content"
+        android:layout_height="47dp"
+        android:backgroundTint="@color/mode_color"
+        android:textColor="#ffff"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.472"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.841"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
