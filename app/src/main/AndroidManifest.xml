@@ -25,6 +25,12 @@
 
         <activity android:name=".HomeScreenActivity" />
 
+        <receiver android:name=".AlarmReceiver"
+            android:exported="true"
+            android:enabled="true">
+
+        </receiver>
+
     </application>
 
 </manifest>
