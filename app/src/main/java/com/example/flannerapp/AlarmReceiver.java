@@ -13,15 +13,20 @@ import android.os.Build;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
+import java.util.Date;
+import java.util.Random;
+
 public class AlarmReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
         String event = intent.getStringExtra("event");
         String time = intent.getStringExtra("time");
-        int notId = intent.getIntExtra("id", 0);
+        Random random = new Random();
+        int m = random.nextInt(9999-1000) + 1000;
+        //int notId = intent.getIntExtra("id", m);
         Intent activityIntent = new Intent(context, MainActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, activityIntent, 0);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, m, activityIntent, 0);
 
         String channelId = "channelId";
         CharSequence name = "channel_name";
@@ -43,7 +48,7 @@ public class AlarmReceiver extends BroadcastReceiver {
                 .setGroup("Group_calendar_view")
                 .build();
         NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(context);
-        notificationManagerCompat.notify(notId,notification);
+        notificationManagerCompat.notify(m,notification);
 
     }
 }

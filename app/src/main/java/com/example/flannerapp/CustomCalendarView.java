@@ -43,6 +43,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Random;
 import java.util.TimeZone;
 import yuku.ambilwarna.AmbilWarnaDialog;
 
@@ -210,7 +211,9 @@ public class CustomCalendarView extends LinearLayout {
     Intent intent = new Intent(context.getApplicationContext(), AlarmReceiver.class);
     intent.putExtra("event", event);
     intent.putExtra("time", time);
-    PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+    Random random = new Random();
+    int m = random.nextInt(9999-1000) + 1000;
+    PendingIntent pendingIntent = PendingIntent.getBroadcast(context, m, intent, PendingIntent.FLAG_ONE_SHOT);
     AlarmManager alarmManager = (AlarmManager)context.getApplicationContext().getSystemService(Context.ALARM_SERVICE);
     alarmManager.set(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(), pendingIntent);
   }
