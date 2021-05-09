@@ -174,7 +174,9 @@ public class CustomCalendarView extends LinearLayout {
             setUpCalendar();
             Calendar calendar = Calendar.getInstance();
             calendar.set(alarmYear,alarmMonth,alarmDay,alarmHour,alarmMinute);
-            setAlarm(calendar,eventName.getText().toString(),eventTime.getText().toString());
+            Random random = new Random();
+            int m = random.nextInt(9999-1000) + 1000;
+            setAlarm(calendar,eventName.getText().toString(),eventTime.getText().toString(), m);
             alertDialog.dismiss();
           }
         });
@@ -207,22 +209,13 @@ public class CustomCalendarView extends LinearLayout {
     eventsList = new ArrayList();
   }
 
-  private void setAlarm(Calendar calendar, String event, String time) {
+  private void setAlarm(Calendar calendar, String event, String time, int requestCode) {
     Intent intent = new Intent(context.getApplicationContext(), AlarmReceiver.class);
     intent.putExtra("event", event);
     intent.putExtra("time", time);
-    Random random = new Random();
-    int m = random.nextInt(9999-1000) + 1000;
-    PendingIntent pendingIntent = PendingIntent.getBroadcast(context, m, intent, PendingIntent.FLAG_ONE_SHOT);
+    PendingIntent pendingIntent = PendingIntent.getBroadcast(context, requestCode, intent, PendingIntent.FLAG_ONE_SHOT);
     AlarmManager alarmManager = (AlarmManager)context.getApplicationContext().getSystemService(Context.ALARM_SERVICE);
     alarmManager.set(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(), pendingIntent);
-  }
-
-  private void cancelAlarm() {
-    Intent intent = new Intent(context.getApplicationContext(), AlarmReceiver.class);
-    PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_ONE_SHOT);
-    AlarmManager alarmManager = (AlarmManager)context.getApplicationContext().getSystemService(Context.ALARM_SERVICE);
-    alarmManager.cancel(pendingIntent);
   }
 
   public interface OnTaskedCompleted {
@@ -404,7 +397,6 @@ public class CustomCalendarView extends LinearLayout {
         @Override
         public void onSuccess(Void aVoid) {
           Log.d(TEST, "onSuccess: We have deleted it successfully");
-          cancelAlarm();
         }
       })
         .addOnFailureListener(new OnFailureListener() {
