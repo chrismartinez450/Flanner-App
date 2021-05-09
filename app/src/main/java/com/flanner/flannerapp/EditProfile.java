@@ -1,4 +1,4 @@
-package com.example.flannerapp;
+package com.flanner.flannerapp;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;

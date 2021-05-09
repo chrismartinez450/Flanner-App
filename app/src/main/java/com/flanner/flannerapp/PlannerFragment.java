@@ -1,4 +1,4 @@
-package com.example.flannerapp;
+package com.flanner.flannerapp;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:176789021887:android:5b5cdd2cc17267d310920a",
         "android_client_info": {
-          "package_name": "com.example.flannerapp"
+          "package_name": "com.flanner.flannerapp"
         }
       },
       "oauth_client": [

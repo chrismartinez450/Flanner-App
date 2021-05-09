@@ -1,4 +1,4 @@
-package com.example.flannerapp;
+package com.flanner.flannerapp;
 
 import android.app.AlarmManager;
 import android.app.AlertDialog;
@@ -25,9 +25,9 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import com.example.flannerapp.Adapter.CalendarEventRecycleViewAdapter;
-import com.example.flannerapp.Adapter.MyGridAdapter;
-import com.example.flannerapp.DatabaseUser.Events;
+import com.flanner.flannerapp.Adapter.CalendarEventRecycleViewAdapter;
+import com.flanner.flannerapp.Adapter.MyGridAdapter;
+import com.flanner.flannerapp.DatabaseUser.Events;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;

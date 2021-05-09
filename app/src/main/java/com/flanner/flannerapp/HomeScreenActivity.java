@@ -1,4 +1,4 @@
-package com.example.flannerapp;
+package com.flanner.flannerapp;
 
 import android.content.Intent;
 import android.os.Bundle;

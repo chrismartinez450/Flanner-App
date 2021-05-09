@@ -1,4 +1,4 @@
-package com.example.flannerapp;
+package com.flanner.flannerapp;
 
 public class EventCalendarCardView {
   private String eventTime;

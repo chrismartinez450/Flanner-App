@@ -1,4 +1,4 @@
-package com.example.flannerapp.Adapter;
+package com.flanner.flannerapp.Adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,8 +8,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
-import com.example.flannerapp.EventCalendarCardView;
-import com.example.flannerapp.R;
+import com.flanner.flannerapp.EventCalendarCardView;
+import com.flanner.flannerapp.R;
 import java.util.ArrayList;
 
 public class CalendarEventRecycleViewAdapter extends RecyclerView.Adapter<CalendarEventRecycleViewAdapter.ExampleViewHolder> {
