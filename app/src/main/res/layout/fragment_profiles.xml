@@ -159,14 +159,14 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.761" />
 
-    <Button
+    <Switch
         android:id="@+id/switch_mode"
         android:layout_width="wrap_content"
         android:layout_height="47dp"
         android:backgroundTint="@color/btn_color"
         android:textColor="#ffff"
         android:textSize="20sp"
-        android:text=""
+        android:text="Dark Mode"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.472"

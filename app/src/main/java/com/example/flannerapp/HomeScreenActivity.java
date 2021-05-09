@@ -1,5 +1,6 @@
 package com.example.flannerapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import androidx.annotation.NonNull;
@@ -45,9 +46,8 @@ public class HomeScreenActivity extends AppCompatActivity implements ProfileFrag
 
   @Override
   public void onButtonClicked() {
-    Bundle newBundle = new Bundle();
-    Fragment profile = new ProfileFragment();
-    profile.setArguments(newBundle);
-    getSupportFragmentManager().beginTransaction().replace(R.id.profile_fragment, profile).commit();
+    Intent i = getIntent();
+    finish();
+    startActivity(i);
   }
 }
