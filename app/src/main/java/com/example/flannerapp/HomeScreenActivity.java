@@ -2,7 +2,6 @@ package com.example.flannerapp;
 
 import android.os.Bundle;
 import android.view.MenuItem;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,7 +9,7 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class HomeScreenActivity extends AppCompatActivity {
+public class HomeScreenActivity extends AppCompatActivity implements ProfileFragment.Callback {
   private Bundle bundle = new Bundle();
 
   @Override
@@ -42,5 +41,13 @@ public class HomeScreenActivity extends AppCompatActivity {
       }
     });
     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new PlannerFragment()).commit();
+  }
+
+  @Override
+  public void onButtonClicked() {
+    Bundle newBundle = new Bundle();
+    Fragment profile = new ProfileFragment();
+    profile.setArguments(newBundle);
+    getSupportFragmentManager().beginTransaction().replace(R.id.profile_fragment, profile).commit();
   }
 }
