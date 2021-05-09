@@ -1,8 +1,11 @@
 package com.example.flannerapp;
 
+import android.app.AlarmManager;
 import android.app.AlertDialog;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -40,6 +43,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Random;
 import java.util.TimeZone;
 import yuku.ambilwarna.AmbilWarnaDialog;
 
@@ -70,6 +74,7 @@ public class CustomCalendarView extends LinearLayout {
   private RecyclerView mRecyclerView;
   private CalendarEventRecycleViewAdapter mAdapter;
   private RecyclerView.LayoutManager mLayoutManager;
+  private int alarmYear, alarmMonth, alarmDay, alarmHour, alarmMinute;
 
   public CustomCalendarView(Context context) {
     super(context);
@@ -112,6 +117,12 @@ public class CustomCalendarView extends LinearLayout {
         final Button addEvent = addView.findViewById(R.id.btn_add_event);
         final Button colorSelectButton = addView.findViewById(R.id.btn_color_select_calendar);
         colorSelectButton.setBackgroundColor(cardViewBackgroundColor);
+        Calendar dateCalendar = Calendar.getInstance();
+        dateCalendar.setTime(dates.get(position));
+        alarmYear = dateCalendar.get(Calendar.YEAR);
+        alarmMonth = dateCalendar.get(Calendar.MONTH);
+        alarmDay = dateCalendar.get(Calendar.DAY_OF_MONTH);
+
         setTime.setOnClickListener(new OnClickListener() {
           @Override
           public void onClick(View v) {
@@ -128,6 +139,9 @@ public class CustomCalendarView extends LinearLayout {
                 SimpleDateFormat hourFormat = new SimpleDateFormat("K:mm a", Locale.ENGLISH);
                 String event_Time = hourFormat.format(c.getTime());
                 eventTime.setText(event_Time);
+                alarmHour = c.get(Calendar.HOUR_OF_DAY);
+                alarmMinute = c.get(Calendar.MINUTE);
+
               }
             }, hours, minutes, false);
             timePickerDialog.show();
@@ -158,6 +172,11 @@ public class CustomCalendarView extends LinearLayout {
             Events newEvent = new Events(eventName.getText().toString(), eventTime.getText().toString(), date, month, year, String.valueOf(cardViewBackgroundColor));
             userPath.document(userID).collection(CALENDAR_EVENTS).add(newEvent);
             setUpCalendar();
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(alarmYear,alarmMonth,alarmDay,alarmHour,alarmMinute);
+            Random random = new Random();
+            int m = random.nextInt(9999-1000) + 1000;
+            setAlarm(calendar,eventName.getText().toString(),eventTime.getText().toString(), m);
             alertDialog.dismiss();
           }
         });
@@ -188,6 +207,15 @@ public class CustomCalendarView extends LinearLayout {
     cardViewBackgroundColor = ContextCompat.getColor(getContext(), R.color.colorPrimary);
     dates = new ArrayList();
     eventsList = new ArrayList();
+  }
+
+  private void setAlarm(Calendar calendar, String event, String time, int requestCode) {
+    Intent intent = new Intent(context.getApplicationContext(), AlarmReceiver.class);
+    intent.putExtra("event", event);
+    intent.putExtra("time", time);
+    PendingIntent pendingIntent = PendingIntent.getBroadcast(context, requestCode, intent, PendingIntent.FLAG_ONE_SHOT);
+    AlarmManager alarmManager = (AlarmManager)context.getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+    alarmManager.setExact(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(), pendingIntent);
   }
 
   public interface OnTaskedCompleted {
