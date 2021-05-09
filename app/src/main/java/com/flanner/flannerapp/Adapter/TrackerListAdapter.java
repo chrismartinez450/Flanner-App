@@ -1,4 +1,4 @@
-package com.example.flannerapp.Adapter;
+package com.flanner.flannerapp.Adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,8 +9,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
-import com.example.flannerapp.R;
-import com.example.flannerapp.DatabaseUser.UserTimer;
+import com.flanner.flannerapp.R;
+import com.flanner.flannerapp.DatabaseUser.UserTimer;
 
 import java.util.ArrayList;
 

@@ -1,4 +1,4 @@
-package com.example.flannerapp.DatabaseUser;
+package com.flanner.flannerapp.DatabaseUser;
 
 public class Events {
   String EVENT, TIME, DATE, MONTH, YEAR, CARDVIEWCOLOR;

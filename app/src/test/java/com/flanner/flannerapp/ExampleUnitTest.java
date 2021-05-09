@@ -1,4 +1,4 @@
-package com.example.flannerapp;
+package com.flanner.flannerapp;
 
 import org.junit.Test;
 

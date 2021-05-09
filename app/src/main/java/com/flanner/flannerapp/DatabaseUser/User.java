@@ -1,4 +1,4 @@
-package com.example.flannerapp.DatabaseUser;
+package com.flanner.flannerapp.DatabaseUser;
 
 public class User {
   public String fullName, age, email;

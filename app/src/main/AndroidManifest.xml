@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.flannerapp">
+    package="com.flanner.flannerapp">
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -8,10 +8,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".EditProfile"></activity>
-        <activity android:name=".RegisterUser" />
-        <activity android:name=".ForgotPassword" />
-        <activity android:name=".MainActivity">
+        <activity android:name="com.flanner.flannerapp.EditProfile"></activity>
+        <activity android:name="com.flanner.flannerapp.RegisterUser" />
+        <activity android:name="com.flanner.flannerapp.ForgotPassword" />
+        <activity android:name="com.flanner.flannerapp.MainActivity">
             android:configChanges="uiMode">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,9 +24,9 @@
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
 
-        <activity android:name=".HomeScreenActivity" />
+        <activity android:name="com.flanner.flannerapp.HomeScreenActivity" />
 
-        <receiver android:name=".AlarmReceiver"
+        <receiver android:name="com.flanner.flannerapp.AlarmReceiver"
             android:exported="true"
             android:enabled="true">
 

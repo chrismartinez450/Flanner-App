@@ -1,6 +1,4 @@
-package com.example.flannerapp.DatabaseUser;
-
-import java.util.Date;
+package com.flanner.flannerapp.DatabaseUser;
 
 public class UserTimer {
     private String date;

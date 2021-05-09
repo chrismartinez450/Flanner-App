@@ -1,4 +1,4 @@
-package com.example.flannerapp;
+package com.flanner.flannerapp;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -8,8 +8,8 @@ import android.widget.ListView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import com.example.flannerapp.Adapter.TrackerListAdapter;
-import com.example.flannerapp.DatabaseUser.UserTimer;
+import com.flanner.flannerapp.Adapter.TrackerListAdapter;
+import com.flanner.flannerapp.DatabaseUser.UserTimer;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
