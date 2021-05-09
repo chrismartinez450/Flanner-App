@@ -71,7 +71,7 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/et_password_register"
-        android:layout_width="380dp"
+        android:layout_width="350dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:ems="10"
@@ -97,7 +97,7 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/et_confirmPassword_register"
-        android:layout_width="380dp"
+        android:layout_width="350dp"
         android:layout_height="wrap_content"
         android:ems="10"
         app:errorEnabled="true"
@@ -122,7 +122,7 @@
 
     <Button
         android:id="@+id/btn_registerUser_register"
-        android:layout_width="380dp"
+        android:layout_width="350dp"
         android:layout_height="70dp"
         android:layout_marginTop="112dp"
         android:background="#535277"

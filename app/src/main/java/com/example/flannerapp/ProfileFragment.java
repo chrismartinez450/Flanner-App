@@ -4,13 +4,14 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,15 +42,14 @@ public class ProfileFragment extends Fragment {
   private DocumentReference docRef;
   private String userID;
 
-  private Button editProfileButton, deleteProfileButton, switchModes;
+  private Button editProfileButton, deleteProfileButton;
   private TextView greetingTextView;
   private TextView fullNameTextView;
   private TextView emailTextView;
   private TextView ageTextView;
   private GoogleSignInClient mGoogleSignInClient;
 
-  private SharedPreferences sharedPreferences = null;
-  private boolean isDarkModeOn;
+  private Switch switchModes;
   private Callback callback;
 
   public interface Callback{
@@ -121,33 +121,24 @@ public class ProfileFragment extends Fragment {
     });
 
     //toggles between light and dark mode
-    sharedPreferences = this.getActivity().getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE);
-    final SharedPreferences.Editor editor = sharedPreferences.edit();
-    isDarkModeOn = sharedPreferences.getBoolean("isDarkModeOn", false);
+    int isDarkModeOn = AppCompatDelegate.getDefaultNightMode();
 
-    if(isDarkModeOn){
-      AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-      switchModes.setText("Disable Dark Mode");
+    if(isDarkModeOn == AppCompatDelegate.MODE_NIGHT_YES){
+      switchModes.setChecked(true);
     }else{
-      AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-      switchModes.setText("Enable Dark Mode");
+      switchModes.setChecked(false);
     }
 
-    switchModes.setOnClickListener(new View.OnClickListener() {
+    switchModes.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
       @Override
-      public void onClick(View v) {
-        if(isDarkModeOn){
-          AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-          editor.putBoolean("isDarkModeOn", false);
-          editor.apply();
-          switchModes.setText("Enable Dark Mode");
-        }else{
+      public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        if(isChecked){
           AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-          editor.putBoolean("isDarkModeOn", true);
-          editor.apply();
-          switchModes.setText("Disable Dark Mode");
+          callback.onButtonClicked();
+        }else{
+          AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+          callback.onButtonClicked();
         }
-        callback.onButtonClicked();
       }
     });
 
