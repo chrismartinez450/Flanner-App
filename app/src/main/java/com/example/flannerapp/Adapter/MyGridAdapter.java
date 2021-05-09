@@ -57,7 +57,7 @@ public class MyGridAdapter extends ArrayAdapter {
     if (displayMonth == currentMonth && displayYear == currentYear) {
       view.setBackgroundColor(getContext().getResources().getColor(R.color.orange));
     } else {
-      view.setBackgroundColor(Color.parseColor("#CCCCCC"));
+      view.setBackgroundColor(getContext().getResources().getColor(R.color.calendar_bg));
     }
     Log.d("test1", "Event size is: " + events.size());
     TextView dateNumber = view.findViewById(R.id.calendar_day);

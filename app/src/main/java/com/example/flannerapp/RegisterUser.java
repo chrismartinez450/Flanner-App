@@ -3,6 +3,7 @@ package com.example.flannerapp;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.View;
@@ -54,6 +55,10 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
     editTextEmail = findViewById(R.id.et_email_register);
     editTextPassword = findViewById(R.id.et_password_register);
     editTextConfirmPassword = findViewById(R.id.et_confirmPassword_register);
+
+    editTextFullName.setTextColor(Color.WHITE);
+    editTextAge.setTextColor(Color.WHITE);
+    editTextEmail.setTextColor(Color.WHITE);
   }
 
   private void performButtons() {
@@ -172,6 +177,4 @@ private boolean checkMatching(String confirmpassword, String password)
     }
     return true;
   }
-
-
 }

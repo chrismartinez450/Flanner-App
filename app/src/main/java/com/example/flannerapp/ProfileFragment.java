@@ -1,8 +1,10 @@
 package com.example.flannerapp;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,6 +16,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -38,13 +41,20 @@ public class ProfileFragment extends Fragment {
   private DocumentReference docRef;
   private String userID;
 
-  private Button editProfileButton;
-  private Button deleteProfileButton;
+  private Button editProfileButton, deleteProfileButton, switchModes;
   private TextView greetingTextView;
   private TextView fullNameTextView;
   private TextView emailTextView;
   private TextView ageTextView;
   private GoogleSignInClient mGoogleSignInClient;
+
+  private SharedPreferences sharedPreferences = null;
+  private boolean isDarkModeOn;
+  private Callback callback;
+
+  public interface Callback{
+    void onButtonClicked();
+  }
 
   @Nullable
   @Override
@@ -53,6 +63,7 @@ public class ProfileFragment extends Fragment {
     logOutButton = root.findViewById(R.id.btn_signOut_profile);
     editProfileButton = root.findViewById(R.id.editButton);
     deleteProfileButton = root.findViewById(R.id.deleteProfileButton);
+    switchModes = root.findViewById(R.id.switch_mode);
     GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestEmail()
             .build();
@@ -109,6 +120,37 @@ public class ProfileFragment extends Fragment {
       }
     });
 
+    //toggles between light and dark mode
+    sharedPreferences = this.getActivity().getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE);
+    final SharedPreferences.Editor editor = sharedPreferences.edit();
+    isDarkModeOn = sharedPreferences.getBoolean("isDarkModeOn", false);
+
+    if(isDarkModeOn){
+      AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+      switchModes.setText("Disable Dark Mode");
+    }else{
+      AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+      switchModes.setText("Enable Dark Mode");
+    }
+
+    switchModes.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        if(isDarkModeOn){
+          AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+          editor.putBoolean("isDarkModeOn", false);
+          editor.apply();
+          switchModes.setText("Enable Dark Mode");
+        }else{
+          AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+          editor.putBoolean("isDarkModeOn", true);
+          editor.apply();
+          switchModes.setText("Disable Dark Mode");
+        }
+        callback.onButtonClicked();
+      }
+    });
+
     user = FirebaseAuth.getInstance().getCurrentUser();
     userID = user.getUid();
     docRef = FirebaseFirestore.getInstance().collection("Users").document(userID);
@@ -146,8 +188,20 @@ public class ProfileFragment extends Fragment {
 
       }
     });
-
     return root;
+  }
+
+  @Override
+  public void onAttach(@NonNull Context context) {
+    super.onAttach(context);
+      callback = (Callback) context;
+      setRetainInstance(true);
+  }
+
+  @Override
+  public void onDetach() {
+    super.onDetach();
+    callback = null;
   }
 
   //updates fragment data in real time
@@ -169,7 +223,6 @@ public class ProfileFragment extends Fragment {
             String fullName = value.getString("fullName");
             String age = value.getString("age");
             String email = value.getString("email");
-            String username = value.getString("username");
 
             fullNameTextView.setText(fullName);
             emailTextView.setText(email);

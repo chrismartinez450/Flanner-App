@@ -150,7 +150,7 @@ public class EditProfile extends AppCompatActivity {
         }).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-                Toast.makeText(EditProfile.this, "Profile has been updated. Please refresh to see changes.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(EditProfile.this, "Profile has been updated.", Toast.LENGTH_SHORT).show();
             }
         })
                 .addOnFailureListener(new OnFailureListener() {
