@@ -9,10 +9,87 @@
       "client_info": {
         "mobilesdk_app_id": "1:176789021887:android:5b5cdd2cc17267d310920a",
         "android_client_info": {
+          "package_name": "com.example.flannerapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "176789021887-20hu1tjuqpa8ipo97295if52kge0cpmm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.flannerapp",
+            "certificate_hash": "62ed2b7b000460bf0976133c7f58b18893e0dec2"
+          }
+        },
+        {
+          "client_id": "176789021887-uutc7m2kqc8j5frdgl3ed2fq5f5arq2k.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.flannerapp",
+            "certificate_hash": "027b88e4213fe5840bac8f141a912b97b487b83a"
+          }
+        },
+        {
+          "client_id": "176789021887-bqe1rj9p7apfht0qhtbdgalg04g4bmjj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBPB5qPgtVSoBd4rgVcHGKZINUQe-U5FOQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "176789021887-bqe1rj9p7apfht0qhtbdgalg04g4bmjj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:176789021887:android:dea1c94edd64226910920a",
+        "android_client_info": {
           "package_name": "com.flanner.flannerapp"
         }
       },
       "oauth_client": [
+        {
+          "client_id": "176789021887-72l9r93gsn9jeg3tuuikhsg43ka4af1e.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.flanner.flannerapp",
+            "certificate_hash": "027b88e4213fe5840bac8f141a912b97b487b83a"
+          }
+        },
+        {
+          "client_id": "176789021887-b8ntqrsfmn7u4v3l7pvafcu7a5b8u23j.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.flanner.flannerapp",
+            "certificate_hash": "62ed2b7b000460bf0976133c7f58b18893e0dec2"
+          }
+        },
+        {
+          "client_id": "176789021887-g36158a3731n5v5tpd7k633e59681ies.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.flanner.flannerapp",
+            "certificate_hash": "18677054de83b877ac197eb02ce659b53f532780"
+          }
+        },
+        {
+          "client_id": "176789021887-h09o76s2qlrm3sancncaboid2bdddme6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.flanner.flannerapp",
+            "certificate_hash": "c2e5cb4094a284bba3df4e1df334d250a8700f9f"
+          }
+        },
         {
           "client_id": "176789021887-bqe1rj9p7apfht0qhtbdgalg04g4bmjj.apps.googleusercontent.com",
           "client_type": 3

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.flanner.flannerapp">
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -11,7 +12,7 @@
         <activity android:name="com.flanner.flannerapp.EditProfile"></activity>
         <activity android:name="com.flanner.flannerapp.RegisterUser" />
         <activity android:name="com.flanner.flannerapp.ForgotPassword" />
-        <activity android:name="com.flanner.flannerapp.MainActivity">
+        <activity android:name="com.flanner.flannerapp.MainActivity"
             android:configChanges="uiMode">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
