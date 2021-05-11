@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.flanner.flannerapp.DatabaseUser.User;
@@ -22,7 +23,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class RegisterUser extends AppCompatActivity implements View.OnClickListener {
-  private TextView banner, registerUserButton;
+  private TextView registerUserButton;
+  private RelativeLayout banner;
   private EditText editTextFullName, editTextAge, editTextEmail;
   private TextInputLayout editTextPassword, editTextConfirmPassword;
   private FirebaseAuth mAuth;
@@ -48,7 +50,7 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
 
   private void initializeAttributes() {
     mAuth = FirebaseAuth.getInstance();
-    banner = findViewById(R.id.banner);
+    banner = (RelativeLayout) findViewById(R.id.sign_up_logo_layout);
     registerUserButton = findViewById(R.id.btn_registerUser_register);
     editTextFullName = findViewById(R.id.et_fullName_register);
     editTextAge = findViewById(R.id.et_age_register);
