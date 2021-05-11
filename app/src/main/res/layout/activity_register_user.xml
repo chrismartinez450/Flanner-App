@@ -7,28 +7,26 @@
     android:background="#3B3A4E"
     tools:context=".RegisterUser">
 
-    <TextView
-        android:id="@+id/banner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
-        android:fontFamily="sans-serif"
-        android:text="Flanner"
-        android:textAlignment="center"
-        android:textColor="#ffffff"
-        android:textSize="60sp"
-        android:textStyle="bold"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="200dp"
+        android:paddingTop="20dp"
+        android:clickable="true"
+        android:id="@+id/sign_up_logo_layout">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/flanner_icon" />
+
+    </RelativeLayout>
 
 
     <EditText
         android:id="@+id/et_fullName_register"
         android:layout_width="350dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="40dp"
         android:ems="10"
         android:hint="Full Name"
         android:inputType="textEmailAddress"
@@ -37,7 +35,7 @@
         app:layout_constraintHorizontal_bias="0.516"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/banner" />
+        app:layout_constraintTop_toBottomOf="@+id/sign_up_logo_layout" />
 
     <EditText
         android:id="@+id/et_age_register"
